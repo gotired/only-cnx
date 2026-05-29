@@ -1,0 +1,11 @@
+{
+  "name": "hms-cnx-marketplace",
+  "owner": { "name": "Kittichai I.", "email": "kittichai.i@humansoft.co.th" },
+  "plugins": [
+    {
+      "name": "hms-cnx",
+      "source": "./",
+      "description": "HMS CNX AI software engineering team (orchestrator + 8 specialists)."
+    }
+  ]
+}
