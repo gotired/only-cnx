@@ -19,3 +19,7 @@
 
 ## Domain
 <!-- - [bew](domain/bew.md) · [ninja](domain/ninja.md) · [oat](domain/oat.md) · [guitar](domain/guitar.md) · [ohm](domain/ohm.md) · [tee](domain/tee.md) -->
+
+## Daily
+<!-- Recent activity logs (episodic; read on demand). Keep only the last ~7 here; older files stay in daily/. -->
+<!-- - [2026-05-25](daily/2026-05-25.md) — avatar upload feature; QA 1 fail→pass; Tee clean -->

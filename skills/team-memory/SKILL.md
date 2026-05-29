@@ -40,6 +40,7 @@ Plain markdown — Obsidian-compatible but not Obsidian-dependent. Folder names 
   contracts/         # durable, frozen API/interface contracts other tasks keep depending on
   qa-history/        # recurring failures, flaky areas, known gotchas worth not re-learning
   domain/            # per-specialist learnings — bew.md ninja.md oat.md guitar.md ohm.md tee.md
+  daily/             # episodic per-day activity logs — YYYY-MM-DD.md (what the team did each day)
   templates/         # typed note templates (copied here at bootstrap from this skill's templates/)
 ```
 **Bootstrap** (when the team wants durable memory and none exists): create the folders above, copy
@@ -51,7 +52,7 @@ Every note carries this frontmatter — it is what makes recall and pruning mech
 ```yaml
 ---
 name: <kebab-id>                 # stable identifier (also the filename stem)
-type: decision|convention|contract|qa|domain
+type: decision|convention|contract|qa|domain|daily
 title: <human title>
 project: <repo-name | "*">       # "*" = cross-project (lives at root of an external/shared vault)
 status: active|superseded|deprecated
@@ -65,6 +66,16 @@ Keep **one fact per note**. Per-type body shapes live in `templates/` (see this 
 directory): decision = context·decision·why·consequences·scope; convention = rule·applies-to·example·why;
 contract = request·response·codes·auth·owner·version; qa = area·repro·root-cause·fix·guard; domain =
 a dated running list of role-specific learnings about this codebase.
+
+## Daily logs (episodic)
+`daily/YYYY-MM-DD.md` records **what the team did each day** — distinct from the semantic notes above,
+which record what the team *knows*. One file per day; each Wan-led run **appends a section** to today's
+file (create it from `templates/daily.md` if missing). An entry captures: the request, per-agent activity
+(who did what — Wan's plan, each specialist's deliverable, QA verdicts, the Tee gate), the outcome,
+changes, and which memory notes were encoded. The `SessionStart` hook injects today's date so the
+filename is always correct. Daily logs are **read on demand** — for standups, "what did we do this
+week", or checking whether an area was touched recently — not on every run, so they never bloat recall.
+Optionally consolidate a week of logs into a milestone note when it earns it.
 
 ## MEMORY.md — the recall map
 One line per note, grouped by type, each carrying a hook + tags + date so Wan can judge relevance from
@@ -84,6 +95,8 @@ Recall is O(index), never O(all notes):
 3. Open only the matched notes — cap at the most relevant ~10; for an external vault, filter to
    `project == <this repo>` plus cross-project (`project: "*"`) notes.
 4. Fold the pertinent facts into each specialist's brief. Specialists never scan the vault themselves.
+5. For an **activity-history** request (standup, "what did we do this week", "did we touch X recently"),
+   read the relevant `daily/` logs instead — that's their purpose; don't load them for ordinary planning.
 
 ## Pruning & consolidation
 - **Supersede, don't silently delete** — when a decision/convention changes, set the old note's
@@ -125,6 +138,8 @@ Specialists **read their slice** (their brief points to the relevant contract/pl
    - **Contracts/** — promote a contract that downstream work will keep depending on.
    - **QA-History/** — a non-obvious failure/gotcha worth not re-discovering.
    - **Domain/** — a durable per-specialist learning.
+   - **Daily/** — **always** append a run entry to `daily/<today>.md` (every run, even when nothing else
+     is durable), capturing per-agent activity, outcome, changes, and notes encoded.
    Update or correct existing notes instead of duplicating; delete notes proven wrong. Encoding is
    **mandatory** when a vault exists — write the notes and `MEMORY.md` first, then **roll/clear the run
    scratchpad as your final action** (the `Stop` hook blocks finishing until `.hms-cnx/run/` is gone when a

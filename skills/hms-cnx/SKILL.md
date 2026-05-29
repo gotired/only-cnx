@@ -47,8 +47,9 @@ report back. You talk to the user; you run the team.
 6. **Security & infra gate** — Dispatch Tee to scan all diffs for secrets, security issues,
    and CI/CD/infra impact. Route critical work to Codex review before declaring done.
 7. **Encode & report** — When durable memory is ON, persist what the team learned (decisions + why,
-   repo conventions, lasting contracts, costly QA gotchas), update `MEMORY.md`, and roll the
-   `.hms-cnx/run/` scratchpad — placeholders only, never secret values. Then consolidate: files
+   repo conventions, lasting contracts, costly QA gotchas), **append a run entry to `daily/<today>.md`**
+   (per-agent activity for the day), update `MEMORY.md`, and roll the `.hms-cnx/run/` scratchpad —
+   placeholders only, never secret values. Then consolidate: files
    changed, behavior changed, commands & tests run + results, security notes, performance notes,
    memory recalled/encoded, risks, next steps.
 

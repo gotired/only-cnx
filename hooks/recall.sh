@@ -25,9 +25,12 @@ fi
 [ -f "$vault/MEMORY.md" ] || exit 0
 command -v python3 >/dev/null 2>&1 || exit 0
 
-python3 - "$vault" <<'PY'
+today="$(date +%F 2>/dev/null || echo unknown)"
+
+python3 - "$vault" "$today" <<'PY'
 import json, sys, os
 vault = sys.argv[1]
+today = sys.argv[2]
 try:
     with open(os.path.join(vault, "MEMORY.md"), "r", encoding="utf-8") as f:
         body = f.read()
@@ -37,10 +40,11 @@ MAX = 8000  # keep the injected index lean
 if len(body) > MAX:
     body = body[:MAX] + "\n…(truncated; open MEMORY.md for the full index)"
 ctx = (
-    "HMS CNX team memory is available at `%s`.\n"
+    "HMS CNX team memory is available at `%s`. Today is %s.\n"
     "RECALL before planning: scan this index and open only the notes whose tags/title match the request.\n"
-    "ENCODE at report time: persist durable learnings and roll `.hms-cnx/run/`. Never write secret values.\n\n"
-    "----- MEMORY.md (recall map) -----\n%s" % (vault, body)
+    "ENCODE at report time: persist durable learnings, append a run entry to `daily/%s.md` (create it from\n"
+    "templates/daily.md if missing), update MEMORY.md, then roll `.hms-cnx/run/`. Never write secret values.\n\n"
+    "----- MEMORY.md (recall map) -----\n%s" % (vault, today, today, body)
 )
 print(json.dumps({"hookSpecificOutput": {"additionalContext": ctx}}))
 PY
