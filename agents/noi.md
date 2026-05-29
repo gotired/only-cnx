@@ -50,7 +50,7 @@ level: 3
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `noi`.
+    - Load your domain skill (`noi`) and the shared `engineering-practices` skill (definition of done, evidence-before-verdict, secret safety).
     - Use the mcp__playwright__* tools for browser testing and Bash for CLI checks. Wait for readiness before interacting; capture output before asserting.
   </Tool_Usage>
 

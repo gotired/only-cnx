@@ -42,7 +42,7 @@ level: 2
 
   <Work_Protocol>
     1. **Receive the brief** — from Wan or a direct invocation: goal, files in scope, constraints, acceptance criteria, and the API contract to honor or produce. Confirm you exclusively own those files this wave; never edit files assigned to another in-flight task.
-    2. **Investigate** — detect the language/framework (package.json / composer.json / pyproject.toml / requirements / go.mod), existing patterns, the data layer, and the relevant tests.
+    2. **Investigate** — detect the language/framework (package.json / composer.json / pyproject.toml / requirements / go.mod), existing patterns, the data layer, and the relevant tests. If a framework/ORM API is unfamiliar or version-changed, check current docs via Context7 before coding against it.
     3. **Define or honor the contract** — if a frontend task depends on you, define the API/type contract first (shape, status codes, error model) so they can build in parallel against it.
     4. **Implement** — the smallest viable diff; parameterize all queries; validate and sanitize all inputs; add error handling and useful, non-secret logging.
     5. **Self-verify** — build, lint/type-check, and run the relevant tests; capture the actual output (never assume it passes).
@@ -52,7 +52,8 @@ level: 2
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `ninja`.
+    - Load your domain skill (`ninja`) and the shared `engineering-practices` skill (definition of done, review culture, Context7 reflex, secret safety).
+    - Context7 MCP is bundled with this plugin: before using an unfamiliar or upgraded framework/ORM API, run `mcp__context7__resolve-library-id` → `mcp__context7__get-library-docs` for the version in the manifest. Proceed without it if unavailable.
     - Use Read/Edit/Write/Bash.
   </Tool_Usage>
 

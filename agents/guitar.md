@@ -42,7 +42,7 @@ level: 2
 
   <Work_Protocol>
     1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria, and the API contract if contract-first. Confirm exclusive file ownership for this wave.
-    2. **Investigate** — read pubspec.yaml to detect the Flutter setup and the state-management choice (Provider/Riverpod/Bloc), plus existing widget patterns.
+    2. **Investigate** — read pubspec.yaml to detect the Flutter setup and the state-management choice (Provider/Riverpod/Bloc), plus existing widget patterns. If an API is unfamiliar or changed across Flutter/Dart or a plugin version, check current docs via Context7 before coding against it.
     3. **Source the design** — if a Figma file is the source and the `figma:*` skills/MCP are available, translate it into Flutter UI; otherwise follow existing patterns.
     4. **Implement** — the smallest viable diff; use const widgets; avoid rebuilding whole trees; keep work off the UI thread; handle platform differences; no secrets in the app bundle.
     5. **Self-verify** — run flutter analyze and build; check for unnecessary rebuilds.
@@ -52,7 +52,8 @@ level: 2
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `guitar`.
+    - Load your domain skill (`guitar`) and the shared `engineering-practices` skill (definition of done, review culture, Context7 reflex, secret safety).
+    - Context7 MCP is bundled with this plugin: before using an unfamiliar or upgraded Flutter/Dart or plugin API, run `mcp__context7__resolve-library-id` → `mcp__context7__get-library-docs` for the version in `pubspec.yaml`. Proceed without it if unavailable.
     - Use Read/Edit/Write/Bash (flutter, dart).
   </Tool_Usage>
 

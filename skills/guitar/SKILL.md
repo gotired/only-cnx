@@ -33,6 +33,53 @@ the UI smooth across Android and iOS.
 - **Consuming an API contract** — model request/response from the published contract (typed Dart models + `fromJson`/`toJson`), route calls through a typed client (`dio`/`http`), handle the documented error envelope and status codes, and respect pagination/filter params so mobile and backend build in parallel.
 - **Permissions & UX** — request platform permissions at the right moment with clear rationale, handle denial paths, and never block the UI on network — show loading/empty/error states.
 
+> Shared team baseline (DoD, review culture, Context7 reflex, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
+
+## Decision rules
+- **`const` or not?** → all inputs compile-time constant → mark it `const` so Flutter reuses the instance and skips rebuilds. Otherwise leave it.
+- **Where does this state live?** → ephemeral, single-widget → `setState`. Shared/app-wide → the project's chosen solution (Provider/Riverpod/Bloc); don't introduce a new one.
+- **Rebuild scope** → wrap only the part that changes (`Selector`/`Consumer`/`ValueListenableBuilder`); don't rebuild the whole screen for one value.
+- **Heavy work?** → CPU-bound → `compute`/isolate; I/O → async; never block the UI thread.
+- **Long list?** → `ListView.builder`/`SliverList` (lazy), never a `Column` of N children.
+- **Unfamiliar/changed API** (a Flutter/Dart major, a new state lib, a platform plugin) → Context7 docs check first.
+
+## Anti-patterns
+- **Rebuilding the whole tree** — smell: `setState` high in the tree for a leaf change → lift the rebuild down to the smallest widget.
+- **Missing `const`** — smell: static widgets rebuilt every frame → add `const`.
+- **Blocking the UI thread** — smell: a heavy parse/loop in `build` or a sync call on tap → move to `compute`/async.
+- **`Column` of many items** — smell: a non-lazy list of unknown length → `ListView.builder`.
+- **Unmanaged controllers/streams** — smell: `AnimationController`/`StreamSubscription` not disposed → dispose in `dispose()`.
+- **Ignoring platform/permission paths** — smell: no `Platform.is*` guard, no denial handling → guard and handle gracefully.
+
+## Worked examples
+**`const` to skip rebuilds:**
+```dart
+// ✗ before — rebuilt every frame
+return Padding(padding: EdgeInsets.all(8), child: Text('Hello'));
+// ✓ after — reused instance
+return const Padding(padding: EdgeInsets.all(8), child: Text('Hello'));
+```
+**Lazy list + scoped rebuild:**
+```dart
+// ✗ before — builds all N up front
+Column(children: items.map((i) => Tile(i)).toList());
+// ✓ after — builds only what's visible
+ListView.builder(itemCount: items.length, itemBuilder: (_, i) => Tile(items[i]));
+```
+
+## Verification checklist
+- [ ] `flutter analyze` + `flutter build` pass (captured output).
+- [ ] `const` applied wherever inputs are compile-time constant.
+- [ ] State change rebuilds the smallest possible subtree.
+- [ ] No heavy/sync work on the UI thread; long lists use `.builder`.
+- [ ] Controllers/subscriptions disposed; platform/permission denial paths handled.
+- [ ] No secrets in the app bundle; loading/empty/error states shown.
+
+## References
+- Flutter docs (docs.flutter.dev): *Performance best practices*, *State management*, isolates/`compute`.
+- The chosen state lib's docs (Riverpod / Bloc / Provider) and `go_router`.
+- **Context7:** `resolve-library-id "flutter"` / the package in `pubspec.yaml` → `get-library-docs` before using an unfamiliar or upgraded API.
+
 ## Guardrails
 - Secret safety + read-before-edit + minimal diffs (see team guardrails).
 - No secrets in app bundles; mind platform permission prompts; avoid unnecessary rebuilds.

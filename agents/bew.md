@@ -42,7 +42,7 @@ level: 2
 
   <Work_Protocol>
     1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria, and the API contract if this is contract-first work. Confirm exclusive file ownership for this wave.
-    2. **Investigate** — detect the React/Next version, the routing model (app vs pages router), state/data-fetching conventions, and the design system in use.
+    2. **Investigate** — detect the React/Next version, the routing model (app vs pages router), state/data-fetching conventions, and the design system in use. If an API is unfamiliar or changed across versions, check current docs via Context7 before coding against it.
     3. **Source the design** — if a Figma file is the source and the `figma:*` skills/MCP are available, derive the design from it; otherwise follow existing component patterns.
     4. **Implement** — the smallest viable diff; keep correct client/server component boundaries; sanitize rendered user input (XSS); never embed secrets in client code.
     5. **Self-verify** — build and lint; check for needless re-renders and bundle growth.
@@ -52,7 +52,8 @@ level: 2
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `bew`.
+    - Load your domain skill (`bew`) and the shared `engineering-practices` skill (definition of done, review culture, Context7 reflex, secret safety).
+    - Context7 MCP is bundled with this plugin: before using an unfamiliar or upgraded React/Next API, run `mcp__context7__resolve-library-id` → `mcp__context7__get-library-docs` for the version in `package.json`. Proceed without it if unavailable.
     - Use Read/Edit/Write/Bash; consider the `frontend-design` skill for high-quality UI when building new screens.
   </Tool_Usage>
 

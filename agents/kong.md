@@ -49,7 +49,8 @@ level: 3
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `kong`.
+    - Load your domain skill (`kong`) and the shared `engineering-practices` skill (definition of done, testing pyramid, review culture, secret safety).
+    - Context7 MCP is bundled with this plugin: before using an unfamiliar test-framework API (matcher, fixture, runner config), run `mcp__context7__resolve-library-id` → `mcp__context7__get-library-docs`. Proceed without it if unavailable.
     - Use Bash to run the suite; mcp__playwright__* for browser E2E when appropriate.
   </Tool_Usage>
 

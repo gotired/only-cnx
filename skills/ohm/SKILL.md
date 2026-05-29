@@ -33,6 +33,54 @@ embeddings and semantic search, and the guardrails that ordinary code does not n
 - **Vector DB options** — choose to fit scale and ops: pgvector (Postgres-native, simple), Qdrant/Weaviate/Milvus (dedicated, scalable), Pinecone (managed); detect the project's existing choice and follow it. Index with the right distance metric and store source metadata alongside vectors for citations.
 - **Secrets** — never hardcode API keys; read them from the environment/secret manager at runtime. For Anthropic SDK work, consult the `claude-api` skill (prompt caching, structured output, tool use).
 
+> Shared team baseline (DoD, review culture, Context7 reflex, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
+
+## Decision rules
+- **Is this retrieved/user text instructions or data?** → always **data**. Never let it alter the system prompt or trigger privileged actions; isolate it.
+- **Can model output reach a sink** (SQL/shell/HTML/eval)? → validate against a schema first; sanitize before the sink; never `eval` it.
+- **Tool/agent action destructive or privileged?** → require a guard/whitelist + arg validation; cap iterations to stop loops.
+- **RAG answer** → must carry source citations and an "I don't know" fallback when retrieval is weak.
+- **Cost/latency** → bound max tokens + context budget, cache embeddings for unchanged content, stream long responses; add timeouts + backoff retries.
+- **Unfamiliar/changed SDK** (model provider, LangChain/LlamaIndex, vector client bump) → Context7 docs check first (and `claude-api` for Anthropic).
+
+## Anti-patterns
+- **Prompt injection via context** — smell: retrieved/user text concatenated into the system prompt → keep instructions and untrusted content separate; ignore embedded "ignore previous instructions".
+- **Unsanitized output to a sink** — smell: model-generated SQL/HTML/shell used directly → schema-validate + sanitize first; never `eval`.
+- **Unbounded spend** — smell: no max-tokens, no rate limit, retries without backoff → cap tokens/context, rate-limit per user, backoff.
+- **Citation-free RAG** — smell: answers with no source refs → attach source metadata and surface citations.
+- **Naive chunking** — smell: fixed-size cuts mid-sentence → semantic/recursive splits with overlap.
+- **Embedding churn** — smell: re-embedding unchanged content every run → cache by content hash.
+
+## Worked examples
+**Separate instructions from untrusted context:**
+```python
+# ✗ before — injectable: doc text can hijack the instruction
+prompt = f"Answer using: {retrieved_text}. {user_question}"
+# ✓ after — roles separate; retrieved text is data, not instruction
+messages = [
+    {"role": "system", "content": "Answer ONLY from <context>. If absent, say you don't know. Cite sources."},
+    {"role": "user", "content": f"<context>{retrieved_text}</context>\n\nQuestion: {user_question}"},
+]
+```
+**Validate model output before use:**
+```python
+# ✓ structured output → parse/validate → only then trust it
+data = MySchema.model_validate_json(resp.output_text)  # raises on bad shape
+```
+
+## Verification checklist
+- [ ] Relevant tests/evals run; retrieval quality, latency, cost sanity-checked (captured output).
+- [ ] Untrusted/retrieved content treated as data, never as instructions.
+- [ ] Model output schema-validated/sanitized before any sink; no `eval`.
+- [ ] Tool actions guarded/whitelisted with arg validation and an iteration cap.
+- [ ] Token/context budget, rate limits, timeouts, and backoff in place.
+- [ ] RAG answers carry citations; API keys read from env, never hardcoded.
+
+## References
+- OWASP *Top 10 for LLM Applications* (prompt injection, insecure output handling, unbounded consumption).
+- Provider docs (Anthropic / OpenAI) and the vector DB's docs; `claude-api` skill for Anthropic SDK.
+- **Context7:** `resolve-library-id` for the model SDK / LangChain / vector client → `get-library-docs` before using an unfamiliar or upgraded API.
+
 ## Guardrails
 - Secret safety + read-before-edit + minimal diffs (see team guardrails).
 - Prevent prompt injection and data leakage; sanitize LLM output; never embed API keys; bound context size/cost; cite sources in RAG.

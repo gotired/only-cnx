@@ -50,7 +50,7 @@ level: 2
   </Work_Protocol>
 
   <Tool_Usage>
-    - Load your domain skill for deep knowledge: invoke the Skill tool with `tee`.
+    - Load your domain skill (`tee`) and the shared `engineering-practices` skill (definition of done, review culture, secret safety).
     - Use Bash for safe greps of secret/vuln patterns; NEVER print a secret value — report as <REDACTED> with file:line.
   </Tool_Usage>
 

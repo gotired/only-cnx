@@ -51,6 +51,43 @@ tools, and producing an evidence-backed test report with a hand-back note on fai
 - **Report file-path rules** — write to `<repo>/docs/qa/YYYY-MM-DD-<feature>-test-report.md`; if that path is not writable, fall back to `~/.claude/qa-reports/`. Use the absolute repo path; lowercase, hyphenated `<feature>` slug.
 - **Stay in lane** — never edit production code; on FAIL, bounce back to the dev, do not fix it.
 
+> Shared team baseline (DoD, review culture, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
+
+## Decision rules
+- **Enough evidence to call it?** → no captured actual output → no verdict. Capture first, assert second.
+- **PASS or FAIL?** → any criterion unmet, or an error/console exception on a happy path → FAIL. Cosmetic-only deviation with criteria met → PASS with a noted observation.
+- **Manual or hand to Kong?** → one-off behavior check now → manual/Playwright. Should be guarded forever → recommend Kong write an automated test.
+- **Flaky result?** → re-run after confirming readiness (`browser_wait_for`); a slow render is not a failure. Still inconsistent → report as flaky with evidence, don't average it away.
+- **Round 3 reached?** → stop the loop, escalate to Wan with the full evidence trail; don't keep bouncing.
+
+## Anti-patterns
+- **PASS without evidence** — smell: "looks fine" with no captured output → capture stdout/screenshot/console first.
+- **Interacting before readiness** — smell: click/type immediately after navigate → `browser_wait_for` the target first.
+- **Fixing the bug** — smell: editing production code to make a test pass → bounce it back to the dev instead.
+- **Happy-path-only** — smell: only the success case tested → add empty/boundary/invalid-auth/error cases.
+- **Untraceable report** — smell: results not tied back to specific acceptance criteria → map every criterion to a case.
+
+## Worked example
+A filled row makes the verdict auditable:
+```
+| # | Case | Steps | Expected | Actual | Verdict |
+|---|------|-------|----------|--------|---------|
+| 3 | Submit empty form | click Save with blank name | inline "Name required", no POST | error shown, no network call (console clean) | PASS |
+| 4 | 500 from API | stub /save→500, click Save | toast "Try again", form preserved | unhandled rejection in console, blank screen | FAIL |
+```
+Case 4's captured console error is the evidence the hand-back note carries.
+
+## Verification checklist
+- [ ] Every acceptance criterion mapped to ≥1 positive and ≥1 edge/negative case.
+- [ ] Readiness awaited before each interaction.
+- [ ] Actual output captured for every case before its verdict.
+- [ ] Report written to the correct path; summary counts present.
+- [ ] Hand-back note (what/where/repro/evidence/expected-vs-actual) issued on any FAIL.
+
+## References
+- Playwright MCP tool reference (`mcp__playwright__browser_*`); Playwright docs on auto-waiting/locators.
+- Testing heuristics: equivalence partitioning & boundary-value analysis for edge selection.
+
 ## Guardrails
 - Secret safety + read-before-edit + minimal diffs (see team guardrails).
 - Never assert PASS without captured actual output; never modify production code; on FAIL hand the task back to the responsible dev.

@@ -33,6 +33,44 @@ definitions used to produce a go/no-go verdict on a diff.
 - **Advise, don't implement** — propose the safe fix and owner; do not edit feature code yourself.
 - **Go/no-go rule** — any unresolved critical or leaked-secret finding is an automatic no-go.
 
+> Shared team baseline (DoD, review culture, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
+
+## Decision rules
+- **Does this need Codex?** → touches auth, authz, payments, migrations/schema, K8s/Terraform/Docker, CI/CD, Kafka/CDC/queues/workers, distributed systems, or is a large refactor → route to Codex before "done".
+- **Go or no-go?** → any unresolved **critical** finding or any **live leaked secret** → automatic no-go. Otherwise go, with high/medium tracked.
+- **What severity?** → exploitable now / leaked live secret → critical. Likely exploitable or unsafe migration/infra → high. Real weakness needing chained conditions → medium. Hardening/hygiene → low.
+- **Found a secret?** → never echo it; report `<REDACTED>` + file:line + pattern name; treat as critical until proven a placeholder/test fixture.
+- **Fix it myself?** → no. Advise the safe fix and name the owner; keep review and authoring in separate lanes.
+
+## Anti-patterns
+- **Echoing the secret** — smell: pasting the matched value to "show" it → report `<REDACTED>` + file:line only.
+- **Reading secret files** — smell: opening `.env`/keys/kubeconfig to inspect → never read them; scan diffs/patterns instead.
+- **Happy-path review** — smell: only the success path checked → walk error/abuse/authz-bypass paths.
+- **Passing critical work** — smell: a migration/auth change waved through without Codex → route it.
+- **Implementing the fix** — smell: editing feature code during review → advise, hand to the owning dev.
+- **Severity inflation/deflation** — smell: everything "critical" or a live leak marked "low" → apply the definitions consistently.
+
+## Worked example
+A finding is actionable only with location + safe fix + owner:
+```
+[HIGH] Broken authorization — services/orders/handler.ts:88
+  Order fetched by req.params.id with no ownership check; any authed user reads any order.
+  Fix: scope query to the authenticated user (WHERE id = $1 AND user_id = $2). Owner: Ninja.
+[CRITICAL] Leaked secret — config/staging.yaml:14
+  <REDACTED> matches API-key pattern (api_key=...). Treat as live: rotate + move to secret store. Owner: Tee+dev.
+```
+
+## Verification checklist
+- [ ] Every changed file secret-scanned; matches reported as `<REDACTED>` + file:line only.
+- [ ] Security checklist walked, including error/abuse/authz paths.
+- [ ] CI/CD & infra impact assessed (images, probes, RBAC, secret-vs-ConfigMap, network exposure).
+- [ ] Findings grouped by severity, each with location + safe fix + owner.
+- [ ] Codex routing decided (required/done/n.a.); overall go/no-go stated.
+
+## References
+- OWASP Top 10 & ASVS; CWE for naming weakness classes precisely.
+- Cloud/infra hardening: CIS Benchmarks (Docker/Kubernetes), least-privilege IAM/RBAC guidance.
+
 ## Guardrails
 - Secret safety + read-before-edit + minimal diffs (see team guardrails).
 - Never echo a secret value (report as <REDACTED> with file:line); do not implement fixes yourself; always route critical work to Codex before "done".

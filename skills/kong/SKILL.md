@@ -34,6 +34,48 @@ registering them so the suite grows and protects against regressions in CI.
 - **Register/locate tests** — place files where the runner already discovers them (matching the configured `testMatch`/`testpaths`/glob); do not add a new runner or config just to host them.
 - **Run before reporting** — never assert a verdict without executing the suite and capturing real output.
 
+> Shared team baseline (DoD, review culture, testing pyramid, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
+
+## Decision rules
+- **Which test level?** → follow the pyramid: pure logic → unit; cross-module/data-layer behavior → integration; user-visible flow → a thin E2E. Push each case to the lowest level that still catches the bug.
+- **New runner or existing?** → always match the repo's existing framework/dir; introduce a new runner only with explicit justification.
+- **Test failed — feature or test?** → reproduce by hand; if the code is wrong → hand back to the dev with the failing test as evidence. If the test is wrong → fix the test, don't touch the code.
+- **Deterministic?** → no real network/time/random → stub, seed, freeze. A non-deterministic test is a liability, not coverage.
+- **Mock or real dependency?** → mock external/slow/non-deterministic boundaries; use the real thing for the unit actually under test.
+
+## Anti-patterns
+- **New framework drift** — smell: adding Jest to a Vitest repo → match the existing runner.
+- **Asserting without running** — smell: a verdict with no captured suite output → run it, capture it.
+- **Flaky by design** — smell: `sleep`/real clock/live network in a test → fake timers, stubs, deterministic seeds.
+- **Testing the mock** — smell: assertions that only verify the stub, not behavior → assert observable outcomes.
+- **Happy-path-only suite** — smell: one success test per feature → add boundary/empty/error/idempotency cases.
+- **Tests the runner won't find** — smell: files outside the configured `testMatch`/paths → place where discovery picks them up.
+
+## Worked example
+**Deterministic over flaky:**
+```ts
+// ✗ before — real timer, racey
+test('expires', async () => { await sleep(1000); expect(token.expired).toBe(true); });
+// ✓ after — fake timers, instant + reliable
+test('expires', () => {
+  vi.useFakeTimers();
+  vi.advanceTimersByTime(1000);
+  expect(token.expired).toBe(true);
+});
+```
+
+## Verification checklist
+- [ ] Framework + directory match the repo's existing convention.
+- [ ] Each acceptance criterion has a test at the right pyramid level, plus key edge cases.
+- [ ] Tests are deterministic (no real network/time/random).
+- [ ] Suite actually runs; full output captured.
+- [ ] Files placed where the runner discovers them (CI will re-run them).
+- [ ] Feature failures handed back with the failing test as evidence.
+
+## References
+- Framework docs for the detected runner (Jest/Vitest/pytest/PHPUnit/`go test`/Playwright).
+- Test design: the testing pyramid; arrange-act-assert; equivalence/boundary partitioning.
+
 ## Guardrails
 - Secret safety + read-before-edit + minimal diffs (see team guardrails).
 - Match the existing test framework and directory; introduce no new test runner without justification; tests must run green against correct code.
