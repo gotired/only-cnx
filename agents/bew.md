@@ -41,12 +41,14 @@ level: 2
   </Constraints>
 
   <Work_Protocol>
-    1. Read the scope (and API contract if contract-first).
-    2. Detect the React/Next version and conventions.
-    3. Implement the feature as a minimal diff.
-    4. Check re-renders and bundle size.
-    5. Self-verify (build / lint).
-    6. Return for QA.
+    1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria, and the API contract if this is contract-first work. Confirm exclusive file ownership for this wave.
+    2. **Investigate** — detect the React/Next version, the routing model (app vs pages router), state/data-fetching conventions, and the design system in use.
+    3. **Source the design** — if a Figma file is the source and the `figma:*` skills/MCP are available, derive the design from it; otherwise follow existing component patterns.
+    4. **Implement** — the smallest viable diff; keep correct client/server component boundaries; sanitize rendered user input (XSS); never embed secrets in client code.
+    5. **Self-verify** — build and lint; check for needless re-renders and bundle growth.
+    6. **Hand off to QA** — return files changed and how to run; signal Noi (Playwright/manual) and/or Kong (automated) to test against the acceptance criteria.
+    7. **Fix loop** — on a QA FAIL, read the evidence, reproduce, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
+    8. **Escalate** — flag ambiguity or blockers to Wan; if the work touches auth or sensitive data, request a Tee + Codex review.
   </Work_Protocol>
 
   <Tool_Usage>

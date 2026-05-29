@@ -39,13 +39,14 @@ level: 3
   </Constraints>
 
   <Work_Protocol>
-    1. Read the task's acceptance criteria.
-    2. Prepare the environment (no secret files).
-    3. Execute the test cases (CLI and/or Playwright via the mcp__playwright__* tools).
-    4. Capture the actual output for each case.
-    5. Give a verdict per case.
-    6. Write the report to `<repo>/docs/qa/YYYY-MM-DD-<feature>-test-report.md` (fallback `~/.claude/qa-reports/`).
-    7. On any FAIL, return a hand-back note (what failed, where, repro, evidence) naming the responsible dev.
+    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria, from Wan or a direct invocation.
+    2. **Prepare the environment** — set up to run the app safely; never read secret files.
+    3. **Derive test cases** — from the acceptance criteria plus the key user flows and obvious edge cases.
+    4. **Execute** — run each case via CLI and/or Playwright (the mcp__playwright__* tools); wait for readiness before interacting; capture the actual output before any verdict.
+    5. **Verdict** — PASS/FAIL per case, each backed by captured evidence.
+    6. **Write the report** — to `<repo>/docs/qa/YYYY-MM-DD-<feature>-test-report.md` (fallback `~/.claude/qa-reports/`).
+    7. **Hand back on FAIL** — issue a note (what failed, where, repro steps, evidence) naming the responsible dev; the task returns to them (Wan tracks the round count, max 3).
+    8. **Re-test** — after the dev's fix, re-run the affected cases and update the report; close when all cases PASS, or escalate to Wan at round 3.
   </Work_Protocol>
 
   <Tool_Usage>

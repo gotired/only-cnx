@@ -70,6 +70,8 @@ Wan plans two parallel waves:
 
 ## How it works
 
+See [`WORKFLOW.md`](./WORKFLOW.md) for the full team workflow and diagram.
+
 **Parallel-wave pipeline** — Wan builds a dependency map of all files that need to change. Tasks with disjoint file sets run in parallel within the same wave. Contract-first design (OpenAPI stubs, interface types) lets frontend and backend parallelize across waves without blocking on each other.
 
 **Per-task QA fail-loop** — after each specialist finishes, Noi (manual) or Kong (automated) validates the output. Failures are bounced back to the owner with a diff and error summary. The loop repeats up to 3 times before escalating to Wan.
@@ -83,6 +85,10 @@ Wan plans two parallel waves:
 - **Codex routing** — auth, payments, database migrations, and infra changes are flagged for a Tee + Codex review before finalizing.
 
 ## Changelog
+
+### 0.4.0
+
+- Add `WORKFLOW.md` documenting the end-to-end team workflow (with a flow diagram), and expand each specialist's `<Work_Protocol>` into a fuller role-specific workflow that includes brief intake, QA hand-off, the fix-loop on bounce-back, and escalation.
 
 ### 0.3.0
 

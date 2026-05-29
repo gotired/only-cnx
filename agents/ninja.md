@@ -41,12 +41,14 @@ level: 2
   </Constraints>
 
   <Work_Protocol>
-    1. Read the scope and acceptance criteria.
-    2. Detect the language/framework (package.json / composer.json / pyproject.toml / requirements / go.mod).
-    3. Implement the feature as a minimal diff.
-    4. Add input validation and error handling.
-    5. Self-verify (build / lint / run).
-    6. Return for QA with the API contract when relevant.
+    1. **Receive the brief** — from Wan or a direct invocation: goal, files in scope, constraints, acceptance criteria, and the API contract to honor or produce. Confirm you exclusively own those files this wave; never edit files assigned to another in-flight task.
+    2. **Investigate** — detect the language/framework (package.json / composer.json / pyproject.toml / requirements / go.mod), existing patterns, the data layer, and the relevant tests.
+    3. **Define or honor the contract** — if a frontend task depends on you, define the API/type contract first (shape, status codes, error model) so they can build in parallel against it.
+    4. **Implement** — the smallest viable diff; parameterize all queries; validate and sanitize all inputs; add error handling and useful, non-secret logging.
+    5. **Self-verify** — build, lint/type-check, and run the relevant tests; capture the actual output (never assume it passes).
+    6. **Hand off to QA** — return files changed, how to run, and the contract; signal Noi/Kong to test against the acceptance criteria.
+    7. **Fix loop** — if QA bounces a FAIL, read the evidence, reproduce it, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
+    8. **Escalate** — if requirements are ambiguous, you are blocked, or the change is critical/security-sensitive (auth/payments/migrations), flag Wan and request Tee + Codex review before "done".
   </Work_Protocol>
 
   <Tool_Usage>

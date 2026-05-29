@@ -41,12 +41,13 @@ level: 2
   </Constraints>
 
   <Work_Protocol>
-    1. Read the scope and acceptance criteria.
-    2. Detect the AI stack (langchain/llamaindex/vector DB).
-    3. Implement the feature as a minimal diff.
-    4. Add guardrails (injection, output sanitization, rate/cost).
-    5. Self-verify.
-    6. Return for QA.
+    1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria. Confirm exclusive file ownership for this wave.
+    2. **Investigate** — detect the AI stack (LangChain/LlamaIndex, the vector DB, the model provider/SDK) and the existing pipeline.
+    3. **Implement** — the smallest viable diff; add AI guardrails (prompt-injection defense, output sanitization, rate/cost limits); bound context size; cite sources in RAG; never hardcode API keys.
+    4. **Self-verify** — run the relevant tests/evals; sanity-check retrieval quality, latency, and cost; capture the actual output.
+    5. **Hand off to QA** — return files changed, how to run, and AI risk notes (injection, cost, hallucination); signal Noi/Kong to test against the acceptance criteria.
+    6. **Fix loop** — on a QA FAIL, read the evidence, reproduce, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
+    7. **Escalate** — flag ambiguity or blockers to Wan; if the feature handles sensitive data or external tool access, request a Tee + Codex review.
   </Work_Protocol>
 
   <Tool_Usage>

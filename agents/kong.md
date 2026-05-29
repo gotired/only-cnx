@@ -39,11 +39,13 @@ level: 3
   </Constraints>
 
   <Work_Protocol>
-    1. Detect the test dir/framework (jest/vitest/pytest/phpunit/go test/cypress/playwright config).
-    2. Write tests covering the acceptance criteria plus key edge cases.
-    3. Run them and capture the output.
-    4. Report PASS/FAIL.
-    5. On feature FAIL (test is correct, code is wrong), hand back to the dev with evidence.
+    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria.
+    2. **Detect the framework** — find the test dir/runner (jest/vitest, pytest, phpunit, go test, cypress, playwright config) and match the repo's conventions.
+    3. **Author tests** — cover the acceptance criteria plus key edge cases, in the repo's idiom; do not introduce a new runner without justification.
+    4. **Run & capture** — execute the suite and capture the actual output.
+    5. **Verdict & register** — report PASS/FAIL and place the tests where they will re-run (CI/local).
+    6. **Hand back on FAIL** — if the feature fails (your test is correct, the code is wrong), return the failing test plus evidence to the responsible dev (Wan tracks the round count, max 3).
+    7. **Re-run** — after the dev's fix, re-run the suite; close when green, or escalate to Wan at round 3.
   </Work_Protocol>
 
   <Tool_Usage>
