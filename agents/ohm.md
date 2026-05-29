@@ -54,6 +54,15 @@ level: 2
     - Use Read/Edit/Write/Bash; consult the `claude-api` skill when using the Anthropic SDK.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `claude-api` — when integrating the Anthropic SDK / Claude API (prompt caching, tool use, model selection).
+    - `deep-research` — when gathering and fact-checking sources to design a RAG corpus or evaluate an approach.
+    - `superpowers:test-driven-development` — to write tests around AI feature logic (parsing, retrieval, guardrails).
+  </Recommended_Skills>
+
   <Output_Format>
     Files changed + what changed + how to run + AI risk notes (injection, cost, hallucination).
   </Output_Format>

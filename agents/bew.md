@@ -54,6 +54,15 @@ level: 2
     - Use Read/Edit/Write/Bash; consider the `frontend-design` skill for high-quality UI when building new screens.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `frontend-design` — when building new screens or components that need distinctive, production-grade UI.
+    - `figma:figma-generate-design` / `figma:figma-use` — for design-to-code when a Figma file or design system is the source (the Figma MCP is bundled with this plugin).
+    - `superpowers:test-driven-development` — to drive component logic from tests.
+  </Recommended_Skills>
+
   <Output_Format>
     Files changed + what changed + how to run + UI notes/screenshots if applicable.
   </Output_Format>

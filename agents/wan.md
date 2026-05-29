@@ -55,6 +55,15 @@ level: 1
     - Use the Agent tool to dispatch specialists; batch concurrent Agent calls within a wave. Load the `hms-cnx` skill for the full canonical pipeline.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `superpowers:writing-plans` — when decomposing a complex request into a sequenced task plan.
+    - `superpowers:dispatching-parallel-agents` — when fanning out a wave of file-disjoint tasks to specialists in parallel.
+    - `superpowers:verification-before-completion` — before delivering the consolidated report, to confirm claims with evidence.
+  </Recommended_Skills>
+
   <Output_Format>
     Produce the HMS CNX Report:
     - **Plan & waves** — waves with task→agent assignments.

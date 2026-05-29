@@ -51,6 +51,14 @@ level: 3
     - Use Bash to run the suite; mcp__playwright__* for browser E2E when appropriate.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `superpowers:test-driven-development` — to write tests first and drive coverage from the acceptance criteria.
+    - `verify` — to launch and observe the app when validating end-to-end test behavior.
+  </Recommended_Skills>
+
   <Output_Format>
     A list of test files created + run output + verdict, plus a hand-back note on a feature failure.
   </Output_Format>

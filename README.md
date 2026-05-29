@@ -84,6 +84,10 @@ Wan plans two parallel waves:
 
 ## Changelog
 
+### 0.3.0
+
+- Add a `<Recommended_Skills>` section to every agent: optional, graceful "use if available" references (planning/parallel-dispatch for Wan, security/code review for Tee, verify/run for QA, TDD for devs, frontend-design + Figma for Bew/Oat/Guitar, claude-api/deep-research for Ohm).
+
 ### 0.2.0
 
 - Bundle MCP servers via `.mcp.json`: `playwright` (QA browser testing) and `figma` (design-to-code). Auto-registered on install.

@@ -53,6 +53,15 @@ level: 3
     - Use the mcp__playwright__* tools for browser testing and Bash for CLI checks. Wait for readiness before interacting; capture output before asserting.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `verify` — to launch the app and observe real behavior when confirming a fix or feature.
+    - `run` — to start/launch the project's app for manual exploration.
+    - `superpowers:verification-before-completion` — to ensure a PASS verdict is backed by captured evidence.
+  </Recommended_Skills>
+
   <Output_Format>
     A test report — environment; test cases as command/expected/actual/verdict; summary counts — plus a hand-back note on any failure.
   </Output_Format>

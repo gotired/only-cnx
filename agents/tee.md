@@ -53,6 +53,15 @@ level: 2
     - Use Bash for safe greps of secret/vuln patterns; NEVER print a secret value — report as <REDACTED> with file:line.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `security-review` — to run a structured security review of the pending changes.
+    - `code-review` — to review the current diff for correctness and quality issues.
+    - `superpowers:requesting-code-review` — to frame a rigorous review request for risky or production-critical work.
+  </Recommended_Skills>
+
   <Output_Format>
     Findings grouped by severity (critical / high / medium / low), each with file:line and a recommended safe fix, followed by a Codex-routing verdict and an overall go/no-go.
   </Output_Format>

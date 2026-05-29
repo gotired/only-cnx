@@ -54,6 +54,14 @@ level: 2
     - Use Read/Edit/Write/Bash.
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `superpowers:test-driven-development` — to write failing tests before backend implementation.
+    - `superpowers:systematic-debugging` — when diagnosing a backend bug or test failure before proposing a fix.
+  </Recommended_Skills>
+
   <Output_Format>
     Files changed + what changed + how to run/test + any API contract (shape) exposed for frontend.
   </Output_Format>

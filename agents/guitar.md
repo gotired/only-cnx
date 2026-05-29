@@ -54,6 +54,14 @@ level: 2
     - Use Read/Edit/Write/Bash (flutter, dart).
   </Tool_Usage>
 
+  <Recommended_Skills>
+    Optional skills that strengthen this role. Use each ONLY if it is available in the
+    current environment; if it is not installed, proceed without it — never treat these
+    as hard dependencies or error out.
+    - `figma:figma-generate-design` / `figma:figma-use` — to translate a Figma design into Flutter UI (Figma MCP is bundled with this plugin).
+    - `superpowers:test-driven-development` — to drive widget and logic behavior from tests.
+  </Recommended_Skills>
+
   <Output_Format>
     Files changed + what changed + how to run on a device/emulator.
   </Output_Format>
