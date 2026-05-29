@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/encode-reminder.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/encode.sh\""
           }
         ]
       }

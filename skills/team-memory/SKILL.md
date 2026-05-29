@@ -125,8 +125,10 @@ Specialists **read their slice** (their brief points to the relevant contract/pl
    - **Contracts/** — promote a contract that downstream work will keep depending on.
    - **QA-History/** — a non-obvious failure/gotcha worth not re-discovering.
    - **Domain/** — a durable per-specialist learning.
-   Update or correct existing notes instead of duplicating; delete notes proven wrong. Then roll/clear
-   the run scratchpad. When durable memory is OFF, skip encoding and say so in the report.
+   Update or correct existing notes instead of duplicating; delete notes proven wrong. Encoding is
+   **mandatory** when a vault exists — write the notes and `MEMORY.md` first, then **roll/clear the run
+   scratchpad as your final action** (the `Stop` hook blocks finishing until `.hms-cnx/run/` is gone when a
+   vault exists). When durable memory is OFF (no valid vault), skip encoding and say so in the report.
 
 ## Enforcement (hooks)
 The prompt-level protocol above is the source of truth; two bundled hooks back it up so it isn't
@@ -134,9 +136,13 @@ silently skipped (both no-op unless they apply, and never read secret files):
 - **`SessionStart` → `hooks/recall.sh`** — if a valid vault exists (`$HMS_CNX_MEMORY` or
   `.hms-cnx/memory/`), injects `MEMORY.md` into context at session start, so recall is guaranteed even
   before Wan acts. Silent no-op in any repo without a vault.
-- **`Stop` → `hooks/encode-reminder.sh`** — if a run scratchpad (`.hms-cnx/run/`) is present, emits a
-  **non-blocking** reminder to encode durable learnings and roll the scratchpad. It stops firing once
-  the scratchpad is rolled (no loop). Teams wanting hard enforcement can change it to a blocking Stop hook.
+- **`Stop` → `hooks/encode.sh`** — if a run scratchpad (`.hms-cnx/run/`) is present **and a valid vault
+  exists to write to**, it **blocks the stop** and instructs the model to encode durable learnings, update
+  `MEMORY.md`, and roll the scratchpad before finishing — so durable memory is written automatically, not
+  optionally. Loop-safe: it forces the encode at most once per stop chain (via `stop_hook_active`), then
+  lets the run finish, so it can never trap the user. It does **not** block when there is no valid vault
+  (nothing to persist to). Because only the model can compose meaningful notes, the hook guarantees the
+  encode *happens*; the model still writes the content.
 
 ## Decision rules
 - **Recall or skip?** → always attempt recall at intake; if no valid vault, proceed on the scratchpad alone.
