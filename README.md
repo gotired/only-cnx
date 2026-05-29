@@ -15,6 +15,17 @@ HMS CNX is a Claude Code plugin that wires up a full engineering team as slash c
 
 > **Note:** commands may appear namespaced (e.g. `/hms-cnx:wan`) depending on the Claude Code version; run `/help` after install to see exact names.
 
+## Bundled MCP servers
+
+Installing the plugin auto-registers two MCP servers (defined in `.mcp.json`):
+
+| Server | Type | Used by | Prerequisite |
+|--------|------|---------|--------------|
+| `playwright` | stdio (`npx @playwright/mcp@latest`) | Noi, Kong — browser/E2E testing | Node.js + `npx` on PATH (browsers download on first run) |
+| `figma` | http (`https://mcp.figma.com/mcp`) | Bew, Oat, Guitar — design-to-code | Figma account; you authenticate on first use |
+
+Both are config-light and ship no secrets. Figma uses OAuth on first call — nothing is stored in the repo. If you don't want a server, comment it out of `.mcp.json` after install, or disable it via `/mcp`.
+
 ## The team
 
 | Nick | Thai | Role | Model | Core job |
@@ -72,6 +83,10 @@ Wan plans two parallel waves:
 - **Codex routing** — auth, payments, database migrations, and infra changes are flagged for a Tee + Codex review before finalizing.
 
 ## Changelog
+
+### 0.2.0
+
+- Bundle MCP servers via `.mcp.json`: `playwright` (QA browser testing) and `figma` (design-to-code). Auto-registered on install.
 
 ### 0.1.0
 
