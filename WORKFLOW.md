@@ -28,13 +28,13 @@ flowchart TD
 
 ## Phases
 
-1. **Intake** — Wan reads the request and safely inspects repo context (never secret files), and classifies the work and the stacks/files touched.
+1. **Intake & recall** — Wan reads the request and safely inspects repo context (never secret files), classifies the work and the stacks/files touched, and **recalls team memory** — resolving the durable vault (`$HMS_CNX_MEMORY` → `.hms-cnx/memory/`) and reading relevant Decisions/Conventions/Contracts/QA-History so known knowledge isn't re-derived.
 2. **Plan** — Wan decomposes the request into discrete tasks, recording for each: owner, files touched, dependencies, and whether it is critical/security-sensitive (auth, authz, payments, DB migrations, K8s, Terraform, CI/CD, CDC/Kafka, distributed systems, large refactors).
 3. **Wave map** — tasks with disjoint file sets and no dependency are grouped into the same wave and run in parallel; tasks that share a file or depend on another's output move to a later wave. Each file has at most one owner in flight. Contract-first stubs convert a dependency into parallel work.
 4. **Dispatch** — Wan spawns each wave's specialists concurrently with a scoped brief (goal, files in scope, constraints, acceptance criteria).
 5. **Per-task QA loop** — as each dev task lands, Noi (manual/Playwright) and/or Kong (automated) tests it. On FAIL the task bounces back to the owning dev with evidence; the loop runs up to 3 rounds, then Wan escalates to the user. QA of one task never blocks unrelated in-flight tasks.
 6. **Security & infra gate** — Tee scans all diffs for secrets, runs the security checklist, and assesses CI/CD & infra impact. Critical work is routed to Codex review before "done".
-7. **Report** — Wan consolidates: files changed, behavior changed, commands & tests run + results, security notes, performance notes, risks, next steps.
+7. **Encode & report** — Wan **encodes** durable learnings (decisions, conventions, lasting contracts, QA gotchas) into the vault when memory is ON, updates `MEMORY.md`, and rolls the run scratchpad — placeholders only, never secrets. Then consolidates: files changed, behavior changed, commands & tests run + results, security notes, performance notes, memory recalled/encoded, risks, next steps.
 
 ## Collaboration rules
 
@@ -45,12 +45,15 @@ flowchart TD
 - **Fail-loop cap** — 3 rounds, then Wan escalates to the user.
 - **Critical work** — auth/payments/migrations/infra go through Tee + Codex before "done".
 - **Secret safety** — no member reads `.env`/credentials/keys/kubeconfig/tokens; secret values are never printed.
+- **Shared baseline** — every member loads the `engineering-practices` skill (definition of done, review culture, testing pyramid, secret safety, Context7 docs-check reflex) alongside their role skill.
+- **Current docs over memory** — before using an unfamiliar or upgraded library API, dev members (Bew, Oat, Guitar, Ninja, Ohm) and Kong check version-accurate docs via the bundled Context7 MCP.
+- **Team memory** — Wan recalls durable knowledge (an Obsidian vault when valid, else the run scratchpad) at intake and encodes learnings at report time. Live run state — wave map, frozen contracts, QA status — lives in the gitignored `.hms-cnx/run/`; specialists read their slice and never write secrets to it. See the `team-memory` skill.
 
 ## Each member's own workflow (summary)
 
 | Member | Workflow shape |
 |--------|----------------|
-| Wan | intake → plan → wave map → dispatch → per-task QA loop → Tee gate → consolidated report |
+| Wan | intake **& recall** → plan → wave map → dispatch → per-task QA loop → Tee gate → **encode** → consolidated report |
 | Ninja / Bew / Oat / Guitar / Ohm | receive brief → investigate → (define/honor contract) → implement (minimal diff) → self-verify → hand to QA → fix-loop on bounce-back → escalate when blocked/critical |
 | Noi | receive deliverable → derive cases → execute & capture evidence → verdict → write report → hand-back on FAIL → re-test until PASS or round 3 |
 | Kong | receive deliverable → detect framework → author tests → run & capture → register → hand-back on FAIL → re-run until green or round 3 |

@@ -17,12 +17,13 @@ HMS CNX is a Claude Code plugin that wires up a full engineering team as slash c
 
 ## Bundled MCP servers
 
-Installing the plugin auto-registers two MCP servers (defined in `.mcp.json`):
+Installing the plugin auto-registers three MCP servers (defined in `.mcp.json`):
 
 | Server | Type | Used by | Prerequisite |
 |--------|------|---------|--------------|
 | `playwright` | stdio (`npx @playwright/mcp@latest`) | Noi, Kong — browser/E2E testing | Node.js + `npx` on PATH (browsers download on first run) |
 | `figma` | http (`https://mcp.figma.com/mcp`) | Bew, Oat, Guitar — design-to-code | Figma account; you authenticate on first use |
+| `context7` | stdio (`npx -y @upstash/context7-mcp`) | Bew, Oat, Guitar, Ninja, Ohm, Kong — version-accurate library docs | Node.js + `npx` on PATH; no key required (free tier) |
 
 Both are config-light and ship no secrets. Figma uses OAuth on first call — nothing is stored in the repo. If you don't want a server, comment it out of `.mcp.json` after install, or disable it via `/mcp`.
 
@@ -78,6 +79,15 @@ See [`WORKFLOW.md`](./WORKFLOW.md) for the full team workflow and diagram.
 
 **Tee security gate** — before the consolidated report is delivered, Tee scans every changed file for leaked secrets, insecure defaults, missing auth guards, and CI/CD misconfigurations. Critical findings block the report until fixed.
 
+**Shared engineering baseline** — every member loads the `engineering-practices` skill alongside their role skill: a common definition of done, review culture, the testing pyramid, secret safety, and a "check current docs via Context7 before using an unfamiliar or upgraded library API" reflex. Each role skill (`bew`, `ninja`, `tee`, …) now also carries explicit decision rules, a named anti-pattern catalog, worked before/after examples, and a verification checklist.
+
+**Team memory** — the team remembers across runs. Wan **recalls** durable knowledge at intake and **encodes** what the team learned at report time, via the `team-memory` skill. Two tiers with graceful degradation:
+
+- **Durable knowledge** lives in an **Obsidian vault** when one is available. The vault is resolved from `$HMS_CNX_MEMORY` (an external/shared vault) or the in-repo `.hms-cnx/memory/` (committed, so knowledge travels with the repo); a vault is valid if it contains `.obsidian/` or a `MEMORY.md`. It holds Decisions, Conventions, Contracts, QA-History, and per-specialist Domain notes.
+- **Coordination scratchpad** — `.hms-cnx/run/` (gitignored, ephemeral) holds the live wave map, frozen contracts, and QA status during a run. This is the always-on fallback when no durable vault exists.
+
+No secret value is ever written to memory (placeholders only), and the plugin is self-contained — it assumes no particular person's vault or machine.
+
 ## Guardrails
 
 - **Secret safety** — no team member reads `.env`, credentials, private keys, kubeconfig, or token files. Real secret values are never printed; placeholders are used instead.
@@ -85,6 +95,18 @@ See [`WORKFLOW.md`](./WORKFLOW.md) for the full team workflow and diagram.
 - **Codex routing** — auth, payments, database migrations, and infra changes are flagged for a Tee + Codex review before finalizing.
 
 ## Changelog
+
+### 0.6.0
+
+- Add **team memory** via the new `team-memory` skill: Wan recalls durable knowledge at intake and encodes decisions/conventions/contracts/QA-gotchas at report time. Durable memory uses an Obsidian-compatible markdown vault (`$HMS_CNX_MEMORY` or in-repo `.hms-cnx/memory/`) when valid; otherwise the team falls back to the `.hms-cnx/run/` coordination scratchpad (gitignored, ephemeral) that also carries live wave-map, frozen contracts, and QA status during every run. The HMS CNX Report now includes a Memory section. No secret values are ever written to memory.
+- Define a structured memory layout: typed notes (`decisions/`, `conventions/`, `contracts/`, `qa-history/`, `domain/`) with a frontmatter schema (`type`/`project`/`status`/`tags`/dates), a tagged `MEMORY.md` recall map for O(index) recall, supersede-don't-delete pruning, multi-project scoping for shared vaults, and copyable note templates shipped in `skills/team-memory/templates/`.
+- Add enforcement hooks (`hooks/hooks.json`): a `SessionStart` hook injects the vault's `MEMORY.md` so recall can't be skipped, and a non-blocking `Stop` hook nudges encoding when a `.hms-cnx/run/` scratchpad is present. Both no-op in any repo without a team vault/run and never read secret files.
+
+### 0.5.0
+
+- Add the shared `engineering-practices` skill (team definition of done, review culture, testing pyramid, observability, secret safety, Context7 docs-check reflex); every agent loads it alongside its role skill.
+- Deepen all 10 role skills with explicit decision rules, a named anti-pattern catalog, worked before/after examples, a verification checklist, and authoritative references.
+- Bundle the `context7` MCP server for version-accurate library docs; wire it into the developer agents' (Bew, Oat, Guitar, Ninja, Ohm) and Kong's workflow and tool usage.
 
 ### 0.4.0
 

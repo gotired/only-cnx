@@ -7,3 +7,8 @@
 credentials*
 secrets*
 node_modules/
+
+# HMS CNX coordination scratchpad — ephemeral per-run state (never committed).
+# The durable team vault (.hms-cnx/memory/) is intentionally NOT ignored so team
+# knowledge travels with the repo.
+.hms-cnx/run/
