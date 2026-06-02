@@ -48,7 +48,7 @@ level: 2
     5. **Self-verify** — run ng build and lint; confirm no leaking subscriptions and sane change detection.
     6. **Hand off to QA** — return files changed and how to run; signal Noi/Kong to test against the acceptance criteria.
     7. **Fix loop** — on a QA FAIL, read the evidence, reproduce, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
-    8. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. If the work touches auth or sensitive data, request a Tee + Codex review.
+    8. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. If the work touches auth or sensitive data, request a Tee review plus an independent second-opinion review.
   </Work_Protocol>
 
   <Tool_Usage>

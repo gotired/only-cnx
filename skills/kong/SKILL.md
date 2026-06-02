@@ -23,6 +23,9 @@ registering them so the suite grows and protects against regressions in CI.
 5. On a feature FAIL (test correct, code wrong), hand back to the dev with evidence.
 
 ## Knowledge / patterns
+- **Test-case design (shift-left)** — when dispatched at **Wave 0 — freeze contract + design test cases**, write the test cases (failing/red where the framework supports it) from the acceptance criteria *before* the dev implements; run them after the build to drive to green.
+- **Prefer in-process testing** — import the app/server factory and test it directly (supertest-style / framework test client); spawn a real server/subprocess only for true E2E or when no factory is exposed. If the backend `listen()`s on import (not import-safe), hand it back to the dev to expose a factory.
+- **Ephemeral test port** — when an integration/E2E test must start a real server, bind `PORT=0` and read the assigned port; never hard-code a port (avoids collisions across parallel QA tasks).
 - **Framework/dir detection — JS/TS:** read `package.json` `scripts.test` and `devDependencies`; `jest.config.*` → Jest; `vitest.config.*` / `vite.config.*` with test block → Vitest; `cypress.config.*` → Cypress; `playwright.config.*` → Playwright. Tests usually under `__tests__/`, `test/`, `tests/`, or `*.spec.ts` / `*.test.ts` next to source.
 - **Framework/dir detection — Python:** `pytest.ini`, `pyproject.toml` `[tool.pytest.ini_options]`, or `setup.cfg` → pytest; otherwise `unittest`. Tests under `tests/` or `test_*.py` / `*_test.py`.
 - **Framework/dir detection — PHP:** `phpunit.xml` / `phpunit.xml.dist` → PHPUnit; tests under `tests/`, classes `*Test.php`.

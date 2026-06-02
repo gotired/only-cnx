@@ -47,7 +47,7 @@ level: 2
     4. **Self-verify** — run the relevant tests/evals; sanity-check retrieval quality, latency, and cost; capture the actual output.
     5. **Hand off to QA** — return files changed, how to run, and AI risk notes (injection, cost, hallucination); signal Noi/Kong to test against the acceptance criteria.
     6. **Fix loop** — on a QA FAIL, read the evidence, reproduce, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
-    7. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. If the feature handles sensitive data or external tool access, request a Tee + Codex review.
+    7. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. If the feature handles sensitive data or external tool access, request a Tee review plus an independent second-opinion review.
   </Work_Protocol>
 
   <Tool_Usage>

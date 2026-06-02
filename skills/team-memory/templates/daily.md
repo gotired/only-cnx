@@ -19,7 +19,7 @@ Read on demand (standups, "what did we do this week", "did we touch X recently")
   - <Ninja> — <what they built / the contract frozen>
   - <Bew> — <what they built>
   - <Noi/Kong> — QA: <pass / N fail→pass>
-  - <Tee> — gate: <clean / findings; Codex required/done>
+  - <Tee> — gate: <clean / findings; an independent second-opinion review required/done>
 - **Outcome:** delivered | partial | blocked — <one line>
 - **Changes:** <files touched, or a count>
 - **Memory encoded:** <[[note-name]], ...> | none durable

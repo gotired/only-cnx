@@ -32,7 +32,7 @@ These are config-light and ship no secrets. Figma and Atlassian use OAuth on fir
 
 | Nick | Thai | Role | Model | Core job |
 |------|------|------|-------|----------|
-| Wan | ว่าน | Project Manager / lead | opus | Analyze requirements, decompose, assign, sequence, prevent file collisions, route critical work to Tee + Codex, consolidate the report. |
+| Wan | ว่าน | Project Manager / lead | opus | Analyze requirements, decompose, assign, sequence, prevent file collisions, route critical work to Tee plus an independent second-opinion review, consolidate the report. |
 | Noi | หน่อย | Manual QA | sonnet | Test dev output (incl. Playwright), write test report, bounce failures back to devs. |
 | Kong | ก้อง | Automation QA | sonnet | Write reusable automated test scripts in the repo's test dir. |
 | Guitar | กีตาร์ | Flutter / mobile dev | sonnet | Flutter widgets, state mgmt, platform integration, mobile UX. |
@@ -93,7 +93,7 @@ No secret value is ever written to memory (placeholders only), and the plugin is
 
 - **Secret safety** — no team member reads `.env`, credentials, private keys, kubeconfig, or token files. Real secret values are never printed; placeholders are used instead.
 - **File-collision prevention** — Wan assigns one owner per file per wave. Two agents never edit the same file at the same time.
-- **Codex routing** — auth, payments, database migrations, and infra changes are flagged for a Tee + Codex review before finalizing.
+- **second-opinion routing** — auth, payments, database migrations, and infra changes are flagged for a Tee review plus an independent second-opinion review before finalizing.
 
 ## Changelog
 
@@ -104,6 +104,8 @@ No secret value is ever written to memory (placeholders only), and the plugin is
 - Add a shared **workflow spine** (Understand → Clarify-or-proceed → Plan → Build → Verify → Hand off), an explicit **ambiguity test**, the fixed `NEEDS CLARIFICATION` note shape, and a **Definition of Ready** to the `engineering-practices` skill — inherited by every member.
 - Normalize every agent's workflow with a **dual-mode clarification branch** (escalate to Wan when dispatched, ask the user when invoked directly). QA (Noi/Kong) now requires testable acceptance criteria before testing; Tee escalates findings with no safe in-scope fix.
 - Close the dev↔QA gap: confirmed **acceptance criteria are written into `.hms-cnx/run/plan.md`** so QA tests the same bar the dev built to. The HMS CNX Report gains an **Assumptions made** section, and resolved clarifications are encoded to team memory as decisions.
+- Add a **test-first flow**: QA (Noi/Kong) author test cases from acceptance criteria at **Wave 0 — freeze contract + design test cases**, before development (a **soft gate** — devs start once cases are drafted). After QA runs, the team always writes one **consolidated test report** at `docs/qa/YYYY-MM-DD-<feature>-test-report.md` (Wan assembles Noi's + Kong's results).
+- Add copyable **dispatch templates** (`skills/hms-cnx/templates/`: `brief.md`, `contract.md`, `test-report.md`), a **backend import-safe-entrypoint** convention (Ninja exports an app factory; only `listen()`s under a main-module guard so QA can test in-process), and a **QA ephemeral-port** convention (bind `PORT=0`, never hard-code) to avoid collisions in parallel test runs.
 
 ### 0.6.0
 

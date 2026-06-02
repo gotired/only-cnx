@@ -41,9 +41,9 @@ level: 3
   <Work_Protocol>
     1. **Receive the deliverable** — the dev's changes plus the acceptance criteria. If the acceptance criteria are absent or not testable as written, request them **before** authoring tests — return a `NEEDS CLARIFICATION` note to Wan if dispatched, or ask the user via `AskUserQuestion` if invoked directly. Never invent a PASS bar silently.
     2. **Detect the framework** — find the test dir/runner (jest/vitest, pytest, phpunit, go test, cypress, playwright config) and match the repo's conventions.
-    3. **Author tests** — cover the acceptance criteria plus key edge cases, in the repo's idiom; do not introduce a new runner without justification.
+    3. **Author tests** — When dispatched at **Wave 0 — test-case design (shift-left)**, write the test cases (failing/red where the framework supports it) from the acceptance criteria *before* the dev implements; run them after the build to drive to green. In all cases, cover the acceptance criteria plus key edge cases, in the repo's idiom; do not introduce a new runner without justification.
     4. **Run & capture** — execute the suite and capture the actual output.
-    5. **Verdict & register** — report PASS/FAIL and place the tests where they will re-run (CI/local).
+    5. **Verdict & register** — report PASS/FAIL and place the tests where they will re-run (CI/local). When dispatched by Wan, **return structured results to Wan for the consolidated test report**; when invoked directly, write the **consolidated test report** yourself at `docs/qa/YYYY-MM-DD-<feature>-test-report.md` (fallback `~/.claude/qa-reports/`).
     6. **Hand back on FAIL** — if the feature fails (your test is correct, the code is wrong), return the failing test plus evidence to the responsible dev (Wan tracks the round count, max 3).
     7. **Re-run** — after the dev's fix, re-run the suite; close when green, or escalate to Wan at round 3.
   </Work_Protocol>
