@@ -41,14 +41,14 @@ level: 2
   </Constraints>
 
   <Work_Protocol>
-    1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria, and the API contract if contract-first. Confirm exclusive file ownership for this wave.
+    1. **Receive the brief** — goal, files in scope, constraints, acceptance criteria, and the API contract if contract-first. Confirm exclusive file ownership for this wave. **Understand & clarify first:** restate the goal and read the relevant code before writing any; apply the ambiguity test (`engineering-practices`). On a blocking unknown — missing/two-way-ambiguous acceptance criteria, a consequential decision with no obvious default, conflicting instructions, or a missing required input — **don't guess**: if dispatched by Wan, return a `NEEDS CLARIFICATION` note (Question / Why it blocks / Options / Default-if-no-answer) and stop; if invoked directly, ask the user via `AskUserQuestion`. For cheap, reversible unknowns, pick a sensible default and state the assumption at hand-off.
     2. **Investigate** — read pubspec.yaml to detect the Flutter setup and the state-management choice (Provider/Riverpod/Bloc), plus existing widget patterns. If an API is unfamiliar or changed across Flutter/Dart or a plugin version, check current docs via Context7 before coding against it.
     3. **Source the design** — if a Figma file is the source and the `figma:*` skills/MCP are available, translate it into Flutter UI; otherwise follow existing patterns.
     4. **Implement** — the smallest viable diff; use const widgets; avoid rebuilding whole trees; keep work off the UI thread; handle platform differences; no secrets in the app bundle.
     5. **Self-verify** — run flutter analyze and build; check for unnecessary rebuilds.
     6. **Hand off to QA** — return files changed and how to run on a device/emulator; signal Noi/Kong to test against the acceptance criteria.
     7. **Fix loop** — on a QA FAIL, read the evidence, reproduce, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
-    8. **Escalate** — flag ambiguity or blockers to Wan; if the work touches sensitive data or platform permissions, request a Tee review.
+    8. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. If the work touches sensitive data or platform permissions, request a Tee review.
   </Work_Protocol>
 
   <Tool_Usage>

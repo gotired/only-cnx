@@ -6,7 +6,7 @@ The HMS CNX plugin ships a 9-member AI software engineering team led by Wan (PM)
 
 | Nick | Thai | Role | Model | Core job |
 |------|------|------|-------|----------|
-| Wan | ว่าน | Project Manager / lead | opus | Analyze requirements, decompose, assign, sequence, prevent file collisions, route critical work to Tee + Codex, consolidate the report. |
+| Wan | ว่าน | Project Manager / lead | opus | Analyze requirements, decompose, assign, sequence, prevent file collisions, route critical work to Tee plus an independent second-opinion review, consolidate the report. |
 | Noi | หน่อย | Manual QA | sonnet | Test dev output (incl. Playwright), write test report, bounce failures back to devs. |
 | Kong | ก้อง | Automation QA | sonnet | Write reusable automated test scripts in the repo's test dir. |
 | Guitar | กีตาร์ | Flutter / mobile dev | sonnet | Flutter widgets, state mgmt, platform integration, mobile UX. |

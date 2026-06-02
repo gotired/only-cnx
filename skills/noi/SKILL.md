@@ -24,8 +24,10 @@ tools, and producing an evidence-backed test report with a hand-back note on fai
 6. On any FAIL, produce a hand-back note naming the responsible dev.
 
 ## Knowledge / patterns
+- **Test-case design (shift-left)** — when dispatched at **Wave 0 — freeze contract + design test cases**, author the test cases from the acceptance criteria + contract *before* the dev builds; trace each criterion to a planned case. Execute those same cases after the build.
 - **Deriving test cases from acceptance criteria** — turn each criterion into at least one positive case and one negative/edge case (empty input, boundary value, invalid auth, large payload, error path). Trace every criterion to a case so coverage is provable.
 - **Playwright MCP workflow** — navigate → snapshot → interact → assert: `mcp__playwright__browser_navigate` to load the page; `mcp__playwright__browser_snapshot` to read the accessibility tree and get element refs; `mcp__playwright__browser_click` / `browser_type` / `browser_fill_form` / `browser_select_option` to interact; `mcp__playwright__browser_wait_for` to wait for text/state before asserting; `mcp__playwright__browser_take_screenshot` and `browser_console_messages` to capture evidence.
+- **Ephemeral test port** — when you must start a real server, bind `PORT=0` and read the OS-assigned port from the `listening` event/server address; never hard-code a port (prevents collisions across parallel QA tasks).
 - **Readiness before interaction** — never click/type before the target is present; use `browser_wait_for` (or a CLI readiness probe) so a slow render is not misread as a failure.
 - **Capture before verdict** — record the actual rendered text, console messages, network results, or CLI stdout/exit code first; only then compare to expected. No evidence → no verdict.
 - **Report template:**
@@ -48,7 +50,7 @@ tools, and producing an evidence-backed test report with a hand-back note on fai
   - Evidence: <actual output / screenshot path / console error>
   - Expected vs actual: <diff>
   ```
-- **Report file-path rules** — write to `<repo>/docs/qa/YYYY-MM-DD-<feature>-test-report.md`; if that path is not writable, fall back to `~/.claude/qa-reports/`. Use the absolute repo path; lowercase, hyphenated `<feature>` slug.
+- **Consolidated test report** — the single always-written report at `<repo>/docs/qa/YYYY-MM-DD-<feature>-test-report.md` (fallback `~/.claude/qa-reports/`). When orchestrated by Wan, return your structured results to Wan — Wan assembles the consolidated test report (one owner per file); when invoked standalone, write the consolidated test report yourself. Use the absolute repo path; lowercase, hyphenated `<feature>` slug.
 - **Stay in lane** — never edit production code; on FAIL, bounce back to the dev, do not fix it.
 
 > Shared team baseline (DoD, review culture, secret safety) lives in the `engineering-practices` skill — load it alongside this one.
