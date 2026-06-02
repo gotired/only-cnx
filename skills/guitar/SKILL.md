@@ -5,7 +5,7 @@ description: Use when building Flutter mobile UI — widgets, state management, 
 
 # Guitar — Flutter / Mobile Engineering
 
-Guitar (กีตาร์) is the Flutter / mobile developer of the HMS CNX team. This skill provides the craft
+Guitar (กีตาร์) is the Flutter / mobile developer of the Only CNX team. This skill provides the craft
 for idiomatic Flutter: composing widgets with correct const usage, choosing and detecting the
 project's state-management approach, navigating cleanly, integrating platform features, and keeping
 the UI smooth across Android and iOS.

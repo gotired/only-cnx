@@ -1,9 +1,9 @@
 ---
 name: team-memory
-description: Use to give the HMS CNX team memory — recall durable knowledge at intake and encode decisions/conventions/gotchas at report time. Prefers an Obsidian vault when one is available; falls back to a within-run coordination scratchpad. Wan owns this; specialists read their slice of run state.
+description: Use to give the Only CNX team memory — recall durable knowledge at intake and encode decisions/conventions/gotchas at report time. Prefers an Obsidian vault when one is available; falls back to a within-run coordination scratchpad. Wan owns this; specialists read their slice of run state.
 ---
 
-# HMS CNX — Team Memory
+# Only CNX — Team Memory
 
 Stateless subagents forget everything between dispatches and between sessions. This skill gives the
 team a shared memory so the PM (Wan) can **recall** what the team already knows before planning and
@@ -11,7 +11,7 @@ team a shared memory so the PM (Wan) can **recall** what the team already knows 
 
 1. **Durable knowledge — an Obsidian vault** (survives across runs and sessions). Used when a valid
    vault is available.
-2. **Coordination scratchpad — `.hms-cnx/run/`** (survives within a single run). Always available;
+2. **Coordination scratchpad — `.only-cnx/run/`** (survives within a single run). Always available;
    the fallback when no durable vault exists, and the live hand-off surface during every run.
 
 This memory is **self-contained and portable** — it never assumes any particular person's vault or
@@ -19,15 +19,15 @@ machine. A team clones the repo and gets the team's memory with it.
 
 ## Resolving the durable vault
 Resolve the vault path in this order; the first that exists wins:
-1. `$HMS_CNX_MEMORY` — explicit path override (an external/shared synced vault).
-2. `.hms-cnx/memory/` — the in-repo team vault (committed, so knowledge travels with the repo).
+1. `$ONLY_CNX_MEMORY` — explicit path override (an external/shared synced vault).
+2. `.only-cnx/memory/` — the in-repo team vault (committed, so knowledge travels with the repo).
 
 **A vault is *valid* only if** the resolved directory exists **and** contains an `.obsidian/` folder
 (the Obsidian marker) **or** a top-level `MEMORY.md`. If neither resolves to a valid vault →
 durable memory is **OFF**; use the coordination scratchpad alone and note in the report that durable
 memory was unavailable.
 
-Bootstrap (only when the team wants durable memory and none exists): create `.hms-cnx/memory/` with a
+Bootstrap (only when the team wants durable memory and none exists): create `.only-cnx/memory/` with a
 `MEMORY.md` index and the folders below; opening that folder once in Obsidian adds `.obsidian/`.
 
 ## Vault structure
@@ -108,15 +108,15 @@ Recall is O(index), never O(all notes):
   exists before relying on it; update or supersede the note if reality has moved.
 
 ## Multi-project (external/shared vault)
-A repo-local `.hms-cnx/memory/` is implicitly single-project (it *is* the project). An external
-`$HMS_CNX_MEMORY` vault shared across repos uses the `project:` frontmatter field to scope notes:
+A repo-local `.only-cnx/memory/` is implicitly single-project (it *is* the project). An external
+`$ONLY_CNX_MEMORY` vault shared across repos uses the `project:` frontmatter field to scope notes:
 per-repo notes set `project: <repo-name>`; conventions that hold everywhere set `project: "*"`. Recall
 filters by the current repo + `"*"`; `MEMORY.md` may group sections by project when many repos share one vault.
 
-## The coordination scratchpad (`.hms-cnx/run/`)
+## The coordination scratchpad (`.only-cnx/run/`)
 Always-on, **gitignored**, ephemeral live state for the current run:
 ```
-.hms-cnx/run/
+.only-cnx/run/
   plan.md            # the wave map: task → owner → files → deps → criticality
   contracts/         # interfaces frozen this run (consumers read these to build in parallel)
   qa-status.md       # per-task verdict + fail-loop round count
@@ -129,8 +129,8 @@ Specialists **read their slice** (their brief points to the relevant contract/pl
    `Conventions/` notes relevant to the request, plus any matching `Contracts/`, `QA-History/`, and
    per-`Domain/` notes for the specialists about to be dispatched. Fold the relevant facts into each
    specialist's brief — specialists don't scan the vault themselves (keeps them focused and cheap).
-2. **Coordinate (during the run)** — write the wave map to `.hms-cnx/run/plan.md`; freeze contracts
-   into `.hms-cnx/run/contracts/`; track QA verdicts in `qa-status.md`. This is the live hand-off memory.
+2. **Coordinate (during the run)** — write the wave map to `.only-cnx/run/plan.md`; freeze contracts
+   into `.only-cnx/run/contracts/`; track QA verdicts in `qa-status.md`. This is the live hand-off memory.
 3. **Encode (at report time)** — when durable memory is ON, persist what the team learned and update
    `MEMORY.md`:
    - **Decisions/** — any architecture/design decision made and why.
@@ -142,16 +142,16 @@ Specialists **read their slice** (their brief points to the relevant contract/pl
      is durable), capturing per-agent activity, outcome, changes, and notes encoded.
    Update or correct existing notes instead of duplicating; delete notes proven wrong. Encoding is
    **mandatory** when a vault exists — write the notes and `MEMORY.md` first, then **roll/clear the run
-   scratchpad as your final action** (the `Stop` hook blocks finishing until `.hms-cnx/run/` is gone when a
+   scratchpad as your final action** (the `Stop` hook blocks finishing until `.only-cnx/run/` is gone when a
    vault exists). When durable memory is OFF (no valid vault), skip encoding and say so in the report.
 
 ## Enforcement (hooks)
 The prompt-level protocol above is the source of truth; two bundled hooks back it up so it isn't
 silently skipped (both no-op unless they apply, and never read secret files):
-- **`SessionStart` → `hooks/recall.sh`** — if a valid vault exists (`$HMS_CNX_MEMORY` or
-  `.hms-cnx/memory/`), injects `MEMORY.md` into context at session start, so recall is guaranteed even
+- **`SessionStart` → `hooks/recall.sh`** — if a valid vault exists (`$ONLY_CNX_MEMORY` or
+  `.only-cnx/memory/`), injects `MEMORY.md` into context at session start, so recall is guaranteed even
   before Wan acts. Silent no-op in any repo without a vault.
-- **`Stop` → `hooks/encode.sh`** — if a run scratchpad (`.hms-cnx/run/`) is present **and a valid vault
+- **`Stop` → `hooks/encode.sh`** — if a run scratchpad (`.only-cnx/run/`) is present **and a valid vault
   exists to write to**, it **blocks the stop** and instructs the model to encode durable learnings, update
   `MEMORY.md`, and roll the scratchpad before finishing — so durable memory is written automatically, not
   optionally. Loop-safe: it forces the encode at most once per stop chain (via `stop_hook_active`), then
@@ -164,16 +164,16 @@ silently skipped (both no-op unless they apply, and never read secret files):
 - **Encode this?** → durable only if it will matter to a *future* run: a decision, a convention, a
   lasting contract, or a costly-to-rediscover gotcha. One-off run state stays in the scratchpad.
 - **Update or create?** → if a note already covers the topic, update it; never duplicate.
-- **In-repo vault or external?** → committed `.hms-cnx/memory/` shares knowledge with the whole team;
-  `$HMS_CNX_MEMORY` points at a synced/private vault when the team prefers that. Resolution handles both.
+- **In-repo vault or external?** → committed `.only-cnx/memory/` shares knowledge with the whole team;
+  `$ONLY_CNX_MEMORY` points at a synced/private vault when the team prefers that. Resolution handles both.
 
 ## Anti-patterns
 - **No recall** — replanning from scratch when the vault already records the decision/gotcha → read `MEMORY.md` first.
-- **Encoding run noise** — saving transient task state as durable knowledge → keep it in `.hms-cnx/run/`.
+- **Encoding run noise** — saving transient task state as durable knowledge → keep it in `.only-cnx/run/`.
 - **Duplicate notes** — a new note for a topic already covered → update the existing one.
 - **Specialists scanning the whole vault** — N agents reading everything → Wan injects the relevant slice into briefs.
 - **Stale memory trusted blindly** — acting on a note that names a file/flag without re-verifying it still exists.
-- **Committing the scratchpad** — `.hms-cnx/run/` must stay gitignored; only the durable vault is committed.
+- **Committing the scratchpad** — `.only-cnx/run/` must stay gitignored; only the durable vault is committed.
 
 ## Secret safety (non-negotiable)
 Memory is exactly where secrets get accidentally persisted. **Never** write a secret value into the

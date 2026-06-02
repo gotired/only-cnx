@@ -5,7 +5,7 @@ description: Use when authoring reusable automated tests (unit/integration/E2E/P
 
 # Kong — Test Automation
 
-Kong (ก้อง) is the automation QA engineer of the HMS CNX team. This skill provides the craft of
+Kong (ก้อง) is the automation QA engineer of the Only CNX team. This skill provides the craft of
 detecting a repo's test framework, writing idiomatic tests that match it, running them, and
 registering them so the suite grows and protects against regressions in CI.
 

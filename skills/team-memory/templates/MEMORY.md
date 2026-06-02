@@ -1,4 +1,4 @@
-# HMS CNX Memory — Index
+# Only CNX Memory — Index
 
 > The recall map. **Read this first at intake.** One line per note:
 > `- [Title](relative/path.md) — hook · tags · YYYY-MM-DD`

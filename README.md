@@ -1,19 +1,19 @@
-# HMS CNX
+# Only CNX
 
 A 9-member AI software engineering team plugin for Claude Code — PM-led orchestration plus 8 specialists covering QA, mobile, frontend, backend, AI, and DevSecOps.
 
 ## What it is
 
-HMS CNX is a Claude Code plugin that wires up a full engineering team as slash commands. Wan (the PM) runs the full orchestration pipeline: intake, decompose, parallel-wave dispatch, QA fail-loop, and a Tee security gate. Eight specialists — Noi, Kong, Guitar, Bew, Oat, Ninja, Ohm, and Tee — can also be invoked directly for scoped work.
+Only CNX is a Claude Code plugin that wires up a full engineering team as slash commands. Wan (the PM) runs the full orchestration pipeline: intake, decompose, parallel-wave dispatch, QA fail-loop, and a Tee security gate. Eight specialists — Noi, Kong, Guitar, Bew, Oat, Ninja, Ohm, and Tee — can also be invoked directly for scoped work.
 
 ## Install
 
 ```
 /plugin marketplace add <git-url-or-local-path>
-/plugin install hms-cnx
+/plugin install only-cnx
 ```
 
-> **Note:** commands may appear namespaced (e.g. `/hms-cnx:wan`) depending on the Claude Code version; run `/help` after install to see exact names.
+> **Note:** commands may appear namespaced (e.g. `/only-cnx:wan`) depending on the Claude Code version; run `/help` after install to see exact names.
 
 ## Bundled MCP servers
 
@@ -44,7 +44,7 @@ These are config-light and ship no secrets. Figma and Atlassian use OAuth on fir
 
 ## Usage
 
-Use `/hms-cnx <request>` or `/wan <request>` to run the full team orchestration pipeline. Use individual specialist commands for scoped work:
+Use `/only-cnx <request>` or `/wan <request>` to run the full team orchestration pipeline. Use individual specialist commands for scoped work:
 
 ```
 /bew     React / Next.js component or page
@@ -60,7 +60,7 @@ Use `/hms-cnx <request>` or `/wan <request>` to run the full team orchestration 
 ### Worked example
 
 ```
-/hms-cnx add a profile page with avatar upload backed by a new API endpoint
+/only-cnx add a profile page with avatar upload backed by a new API endpoint
 ```
 
 Wan plans two parallel waves:
@@ -84,8 +84,8 @@ See [`WORKFLOW.md`](./WORKFLOW.md) for the full team workflow and diagram.
 
 **Team memory** — the team remembers across runs. Wan **recalls** durable knowledge at intake and **encodes** what the team learned at report time, via the `team-memory` skill. Two tiers with graceful degradation:
 
-- **Durable knowledge** lives in an **Obsidian vault** when one is available. The vault is resolved from `$HMS_CNX_MEMORY` (an external/shared vault) or the in-repo `.hms-cnx/memory/` (committed, so knowledge travels with the repo); a vault is valid if it contains `.obsidian/` or a `MEMORY.md`. It holds Decisions, Conventions, Contracts, QA-History, and per-specialist Domain notes.
-- **Coordination scratchpad** — `.hms-cnx/run/` (gitignored, ephemeral) holds the live wave map, frozen contracts, and QA status during a run. This is the always-on fallback when no durable vault exists.
+- **Durable knowledge** lives in an **Obsidian vault** when one is available. The vault is resolved from `$ONLY_CNX_MEMORY` (an external/shared vault) or the in-repo `.only-cnx/memory/` (committed, so knowledge travels with the repo); a vault is valid if it contains `.obsidian/` or a `MEMORY.md`. It holds Decisions, Conventions, Contracts, QA-History, and per-specialist Domain notes.
+- **Coordination scratchpad** — `.only-cnx/run/` (gitignored, ephemeral) holds the live wave map, frozen contracts, and QA status during a run. This is the always-on fallback when no durable vault exists.
 
 No secret value is ever written to memory (placeholders only), and the plugin is self-contained — it assumes no particular person's vault or machine.
 
@@ -103,16 +103,16 @@ No secret value is ever written to memory (placeholders only), and the plugin is
 - Add a **Wan-gated user-clarification loop**. Wan now runs an **ambiguity test at intake** and asks the user a small batch (1–4) of targeted, mostly multiple-choice questions when a request is underspecified, instead of silently guessing. Because subagents cannot pause mid-run, clarification is **return-early + re-dispatch**: a specialist that hits a blocking unknown returns a structured `NEEDS CLARIFICATION` note to Wan (or, when invoked directly, asks the user itself), Wan asks the user, then re-dispatches with the answer.
 - Add a shared **workflow spine** (Understand → Clarify-or-proceed → Plan → Build → Verify → Hand off), an explicit **ambiguity test**, the fixed `NEEDS CLARIFICATION` note shape, and a **Definition of Ready** to the `engineering-practices` skill — inherited by every member.
 - Normalize every agent's workflow with a **dual-mode clarification branch** (escalate to Wan when dispatched, ask the user when invoked directly). QA (Noi/Kong) now requires testable acceptance criteria before testing; Tee escalates findings with no safe in-scope fix.
-- Close the dev↔QA gap: confirmed **acceptance criteria are written into `.hms-cnx/run/plan.md`** so QA tests the same bar the dev built to. The HMS CNX Report gains an **Assumptions made** section, and resolved clarifications are encoded to team memory as decisions.
+- Close the dev↔QA gap: confirmed **acceptance criteria are written into `.only-cnx/run/plan.md`** so QA tests the same bar the dev built to. The Only CNX Report gains an **Assumptions made** section, and resolved clarifications are encoded to team memory as decisions.
 - Add a **test-first flow**: QA (Noi/Kong) author test cases from acceptance criteria at **Wave 0 — freeze contract + design test cases**, before development (a **soft gate** — devs start once cases are drafted). After QA runs, the team always writes one **consolidated test report** at `docs/qa/YYYY-MM-DD-<feature>-test-report.md` (Wan assembles Noi's + Kong's results).
-- Add copyable **dispatch templates** (`skills/hms-cnx/templates/`: `brief.md`, `contract.md`, `test-report.md`), a **backend import-safe-entrypoint** convention (Ninja exports an app factory; only `listen()`s under a main-module guard so QA can test in-process), and a **QA ephemeral-port** convention (bind `PORT=0`, never hard-code) to avoid collisions in parallel test runs.
+- Add copyable **dispatch templates** (`skills/only-cnx/templates/`: `brief.md`, `contract.md`, `test-report.md`), a **backend import-safe-entrypoint** convention (Ninja exports an app factory; only `listen()`s under a main-module guard so QA can test in-process), and a **QA ephemeral-port** convention (bind `PORT=0`, never hard-code) to avoid collisions in parallel test runs.
 
 ### 0.6.0
 
-- Add **team memory** via the new `team-memory` skill: Wan recalls durable knowledge at intake and encodes decisions/conventions/contracts/QA-gotchas at report time. Durable memory uses an Obsidian-compatible markdown vault (`$HMS_CNX_MEMORY` or in-repo `.hms-cnx/memory/`) when valid; otherwise the team falls back to the `.hms-cnx/run/` coordination scratchpad (gitignored, ephemeral) that also carries live wave-map, frozen contracts, and QA status during every run. The HMS CNX Report now includes a Memory section. No secret values are ever written to memory.
+- Add **team memory** via the new `team-memory` skill: Wan recalls durable knowledge at intake and encodes decisions/conventions/contracts/QA-gotchas at report time. Durable memory uses an Obsidian-compatible markdown vault (`$ONLY_CNX_MEMORY` or in-repo `.only-cnx/memory/`) when valid; otherwise the team falls back to the `.only-cnx/run/` coordination scratchpad (gitignored, ephemeral) that also carries live wave-map, frozen contracts, and QA status during every run. The Only CNX Report now includes a Memory section. No secret values are ever written to memory.
 - Define a structured memory layout: typed notes (`decisions/`, `conventions/`, `contracts/`, `qa-history/`, `domain/`) with a frontmatter schema (`type`/`project`/`status`/`tags`/dates), a tagged `MEMORY.md` recall map for O(index) recall, supersede-don't-delete pruning, multi-project scoping for shared vaults, and copyable note templates shipped in `skills/team-memory/templates/`.
 - Add a daily activity log (episodic memory): each Wan-led run appends a per-agent entry to `daily/YYYY-MM-DD.md` in the vault (request, who did what, outcome, changes, notes encoded) as part of the mandatory encode, so the team tracks what it did each day. The `SessionStart` hook injects today's date so the filename is correct; daily logs are read on demand (standups, "what did we do this week").
-- Add enforcement hooks (`hooks/hooks.json`): a `SessionStart` hook injects the vault's `MEMORY.md` so recall can't be skipped, and a `Stop` hook that **blocks a team run from finishing until durable memory is encoded** (and the `.hms-cnx/run/` scratchpad is rolled) whenever a valid vault exists — so memory auto-writes rather than being optional. The Stop hook is loop-safe (forces the encode at most once per stop chain via `stop_hook_active`) and only enforces when there's a vault to write to. Both hooks no-op in any repo without a team vault/run and never read secret files.
+- Add enforcement hooks (`hooks/hooks.json`): a `SessionStart` hook injects the vault's `MEMORY.md` so recall can't be skipped, and a `Stop` hook that **blocks a team run from finishing until durable memory is encoded** (and the `.only-cnx/run/` scratchpad is rolled) whenever a valid vault exists — so memory auto-writes rather than being optional. The Stop hook is loop-safe (forces the encode at most once per stop chain via `stop_hook_active`) and only enforces when there's a vault to write to. Both hooks no-op in any repo without a team vault/run and never read secret files.
 
 ### 0.5.0
 

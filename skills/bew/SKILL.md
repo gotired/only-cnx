@@ -5,7 +5,7 @@ description: Use when building React or Next.js UI — components, hooks, routin
 
 # Bew — React / Next.js Engineering
 
-Bew (บิว) is the React / Next.js developer of the HMS CNX team. This skill provides the craft for
+Bew (บิว) is the React / Next.js developer of the Only CNX team. This skill provides the craft for
 building correct, performant, and accessible UI: choosing server vs client components, following
 the hooks rules, fetching data idiomatically, and keeping renders and bundles lean.
 

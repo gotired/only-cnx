@@ -1,7 +1,7 @@
 # API Contract (dispatch stub) — <name>
 
 > A frozen interface so producer + consumers build in parallel. Distinct from the durable
-> `team-memory` contract note — this one lives in `.hms-cnx/run/contracts/` during a run.
+> `team-memory` contract note — this one lives in `.only-cnx/run/contracts/` during a run.
 
 - **Endpoint:** <METHOD> <path>
 - **Request:** <fields, types, required vs optional>
