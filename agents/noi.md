@@ -52,6 +52,7 @@ level: 3
   <Tool_Usage>
     - Load your domain skill (`noi`) and the shared `engineering-practices` skill (definition of done, evidence-before-verdict, secret safety).
     - Use the mcp__playwright__* tools for browser testing and Bash for CLI checks. Wait for readiness before interacting; capture output before asserting.
+    - Jira (Atlassian MCP, `mcp__atlassian__*`) is bundled. When the work is tracked in Jira: pull the issue's acceptance criteria to derive test cases, and on FAIL raise/update a defect (or comment on the issue) with repro steps and captured evidence, linking it to the parent issue; transition the test/issue status to reflect your verdict. Keep the report at the canonical path as the source of truth — Jira mirrors it. Authenticate in-browser on first use; never paste tokens. Proceed without it if unavailable.
   </Tool_Usage>
 
   <Recommended_Skills>

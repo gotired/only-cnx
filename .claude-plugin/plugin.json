@@ -1,6 +1,6 @@
 {
   "name": "hms-cnx",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "HMS CNX — a 9-member AI software engineering team: PM-led orchestrator (Wan) plus specialists for QA, mobile, frontend, backend, AI, and DevSecOps.",
   "author": { "name": "Kittichai I.", "email": "kittichai.i@humansoft.co.th" },
   "keywords": ["team", "orchestration", "qa", "frontend", "backend", "devsecops", "ai", "mcp"],

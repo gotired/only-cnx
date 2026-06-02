@@ -52,6 +52,7 @@ level: 3
     - Load your domain skill (`kong`) and the shared `engineering-practices` skill (definition of done, testing pyramid, review culture, secret safety).
     - Context7 MCP is bundled with this plugin: before using an unfamiliar test-framework API (matcher, fixture, runner config), run `mcp__context7__resolve-library-id` → `mcp__context7__get-library-docs`. Proceed without it if unavailable.
     - Use Bash to run the suite; mcp__playwright__* for browser E2E when appropriate.
+    - Jira (Atlassian MCP, `mcp__atlassian__*`) is bundled. When the work is tracked in Jira: record the automated suite result on the covered issue (a comment with the run summary and which acceptance criteria are now covered by which test files); on a feature failure, link the failing test back to the issue alongside the hand-back note. Authenticate in-browser on first use; never paste tokens. Proceed without it if unavailable.
   </Tool_Usage>
 
   <Recommended_Skills>

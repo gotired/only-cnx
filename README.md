@@ -17,15 +17,16 @@ HMS CNX is a Claude Code plugin that wires up a full engineering team as slash c
 
 ## Bundled MCP servers
 
-Installing the plugin auto-registers three MCP servers (defined in `.mcp.json`):
+Installing the plugin auto-registers four MCP servers (defined in `.mcp.json`):
 
 | Server | Type | Used by | Prerequisite |
 |--------|------|---------|--------------|
 | `playwright` | stdio (`npx @playwright/mcp@latest`) | Noi, Kong — browser/E2E testing | Node.js + `npx` on PATH (browsers download on first run) |
 | `figma` | http (`https://mcp.figma.com/mcp`) | Bew, Oat, Guitar — design-to-code | Figma account; you authenticate on first use |
 | `context7` | stdio (`npx -y @upstash/context7-mcp`) | Bew, Oat, Guitar, Ninja, Ohm, Kong — version-accurate library docs | Node.js + `npx` on PATH; no key required (free tier) |
+| `atlassian` | http (`https://mcp.atlassian.com/v1/mcp`) | Wan, Noi, Kong — Jira issue tracking (read criteria, log defects, transition status) | Atlassian Cloud account; OAuth in browser on first use |
 
-Both are config-light and ship no secrets. Figma uses OAuth on first call — nothing is stored in the repo. If you don't want a server, comment it out of `.mcp.json` after install, or disable it via `/mcp`.
+These are config-light and ship no secrets. Figma and Atlassian use OAuth on first call — nothing is stored in the repo. The Atlassian server targets Atlassian **Cloud** (Jira/Confluence); the legacy `/v1/sse` endpoint is being retired, so this config uses the current `/v1/mcp` streamable-HTTP endpoint. If you don't want a server, comment it out of `.mcp.json` after install, or disable it via `/mcp`.
 
 ## The team
 

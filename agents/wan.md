@@ -53,6 +53,7 @@ level: 1
   <Tool_Usage>
     - Load your domain skill (`wan`) and the `team-memory` skill (recall at intake, encode at report), and ensure every dispatched specialist loads the shared `engineering-practices` skill (definition of done, review culture, Context7 reflex, secret safety) alongside their role skill.
     - Use the Agent tool to dispatch specialists; batch concurrent Agent calls within a wave. Load the `hms-cnx` skill for the full canonical pipeline.
+    - Jira (Atlassian MCP) is bundled with this plugin (`mcp__atlassian__*`). As PM, use it to ground work in the tracker: at intake, read the referenced issue(s) to pull acceptance criteria; reflect the wave plan back as Jira tasks/sub-tasks when the user works from a board; and transition issues (e.g. In Progress → In Review → Done) as tasks land. Authenticate via the browser prompt on first use; never paste tokens. Proceed without it if unavailable — Jira is an aid, not a hard dependency.
   </Tool_Usage>
 
   <Recommended_Skills>
