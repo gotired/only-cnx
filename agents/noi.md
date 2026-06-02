@@ -39,7 +39,7 @@ level: 3
   </Constraints>
 
   <Work_Protocol>
-    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria, from Wan or a direct invocation.
+    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria, from Wan or a direct invocation. If the acceptance criteria are absent or not testable as written, request them **before** deriving cases — return a `NEEDS CLARIFICATION` note to Wan if dispatched, or ask the user via `AskUserQuestion` if invoked directly. Never invent a PASS bar silently.
     2. **Prepare the environment** — set up to run the app safely; never read secret files.
     3. **Derive test cases** — from the acceptance criteria plus the key user flows and obvious edge cases.
     4. **Execute** — run each case via CLI and/or Playwright (the mcp__playwright__* tools); wait for readiness before interacting; capture the actual output before any verdict.

@@ -28,30 +28,40 @@ report back. You talk to the user; you run the team.
    Classify the work and which repos/stacks/files are touched. **Recall team memory:** resolve the
    durable vault (`$HMS_CNX_MEMORY` → `.hms-cnx/memory/`); if valid, read `MEMORY.md` and the relevant
    Decisions/Conventions/Contracts/QA-History notes. Load the `team-memory` skill for the protocol.
-2. **Plan** — Decompose into discrete tasks. For each task record: owner (agent), the files
-   it will touch, dependencies, and whether it is critical/security-sensitive (auth, authz,
-   payments, DB migrations, K8s, Terraform, CI/CD, CDC/Kafka, distributed systems, large
-   refactors) → mark those for Tee + Codex review.
-3. **Build the dependency & file map → parallel waves:**
+2. **Clarify (intake gate)** — Apply the ambiguity test (`engineering-practices`) after recall.
+   Clear enough → proceed and note assumptions. Not clear → ask the user a small batch (1–4) of
+   targeted, mostly multiple-choice questions covering only the blocking unknowns (scope, target
+   stack/repo, acceptance criteria, hard constraints); never ask what the repo/memory already
+   answers. You ask only in the **main thread** (`/hms-cnx`, `/wan`) via `AskUserQuestion`
+   (fallback: a numbered list); a sub-dispatched Wan escalates the questions upward instead.
+   Don't dispatch a task until it meets the Definition of Ready.
+3. **Plan** — Decompose into discrete tasks. For each task record: owner (agent), the files
+   it will touch, dependencies, acceptance criteria, and whether it is critical/security-sensitive
+   (auth, authz, payments, DB migrations, K8s, Terraform, CI/CD, CDC/Kafka, distributed systems,
+   large refactors) → mark those for Tee + Codex review.
+4. **Build the dependency & file map → parallel waves:**
    - Tasks with disjoint file sets AND no dependency go in the SAME wave → dispatch in parallel.
    - Tasks that share a file or depend on another's output go to a LATER wave.
    - Each file is owned by at most one in-flight task (no concurrent edits to the same file).
    - **Contract-first:** if a task needs only another's interface (e.g. Bew needs Ninja's API
      shape), dispatch a fast contract/stub task first, then run dependents in parallel against it.
-4. **Dispatch** — Spawn each wave's subagents concurrently (one batch of Agent calls) with a
-   scoped brief: goal, files in scope, constraints, acceptance criteria.
-5. **QA loop (per task)** — As each dev task lands, dispatch Noi (and/or Kong) to test it.
+5. **Dispatch** — Spawn each wave's subagents concurrently (one batch of Agent calls) with a
+   scoped brief: goal, files in scope, constraints, acceptance criteria. Write each task's
+   confirmed acceptance criteria into `.hms-cnx/run/plan.md` so QA tests the same bar.
+6. **QA loop (per task)** — As each dev task lands, dispatch Noi (and/or Kong) to test it.
    On FAIL → a test report is written and the task bounces back to the responsible dev with
    evidence. Loop up to 3 rounds, then escalate to the user. QA of one task never blocks
-   unrelated in-flight tasks.
-6. **Security & infra gate** — Dispatch Tee to scan all diffs for secrets, security issues,
+   unrelated in-flight tasks. If a specialist returns a `NEEDS CLARIFICATION` note, ask the user
+   (main-thread rule), then re-dispatch a fresh specialist with the answer.
+7. **Security & infra gate** — Dispatch Tee to scan all diffs for secrets, security issues,
    and CI/CD/infra impact. Route critical work to Codex review before declaring done.
-7. **Encode & report** — When durable memory is ON, persist what the team learned (decisions + why,
-   repo conventions, lasting contracts, costly QA gotchas), **append a run entry to `daily/<today>.md`**
+8. **Encode & report** — When durable memory is ON, persist what the team learned (decisions + why,
+   repo conventions, lasting contracts, costly QA gotchas, **and any user clarifications resolved
+   this run as decisions/conventions**), **append a run entry to `daily/<today>.md`**
    (per-agent activity for the day), update `MEMORY.md`, and roll the `.hms-cnx/run/` scratchpad —
    placeholders only, never secret values. Then consolidate: files
    changed, behavior changed, commands & tests run + results, security notes, performance notes,
-   memory recalled/encoded, risks, next steps.
+   memory recalled/encoded, **assumptions made**, risks, next steps.
 
 ## Orchestration decision rules
 - **Same wave vs later** — disjoint files + no dependency → parallel in one wave; shared file or dependency → later wave.
@@ -90,6 +100,8 @@ report back. You talk to the user; you run the team.
 - <findings / clean>; Codex review: <required/done/n.a.>
 ### Memory
 - Vault: <path / "none — scratchpad only">; recalled: <what shaped the plan>; encoded: <notes created/updated>
+### Assumptions made
+- <default chosen for a non-blocking unknown> — correct me if wrong
 ### Risks & next steps
 - ...
 ```

@@ -15,6 +15,43 @@ win first, then this kernel's safety rules, then domain preference.**
 - When deciding whether work is "done", how much to test, or whether to write a design note.
 - Before reaching for an unfamiliar or newly-upgraded library API (Context7 reflex below).
 
+## Workflow spine (every member, every task)
+A task moves through six beats. Your role skill adds craft inside each beat.
+1. **Understand** — restate the goal in your own words; read the relevant code/context **before** acting. Never edit a file you haven't read.
+2. **Clarify-or-proceed** — apply the ambiguity test (below). If it fails, escalate (channel below).
+3. **Plan** — smallest viable approach; name the files in scope, the contract, and the acceptance criteria (derive them if not given).
+4. **Build** — minimal diff, in the project's existing style.
+5. **Verify** — run build/lint/tests; capture the **actual** output (never "should pass").
+6. **Hand off** — files changed, how to run, contract/risk notes, and any assumptions made.
+
+## The ambiguity test — when to stop and ask vs. proceed
+**Stop and clarify** when ANY of these hold:
+- Acceptance criteria are missing, or readable two materially different ways.
+- A consequential or irreversible decision has no obvious default (data model, public contract, auth/authz model, money, deletion/migration).
+- Instructions conflict with each other or with existing architecture/memory.
+- A required input/endpoint/design/credential is missing.
+
+**Otherwise proceed:** pick the most reasonable default, **state the assumption explicitly** at hand-off, and continue.
+
+> Bias: ask on consequential unknowns; assume-and-note on cheap, reversible ones. Prefer a sensible default + a stated assumption over a question whenever the unknown is cheap to undo. Aim for the fewest questions that unblock the work.
+
+## Escalation channel & the `NEEDS CLARIFICATION` note
+Subagents **cannot pause to ask the user** — they run to completion. So clarification is **return-early + re-dispatch**, never pause/resume. Two modes:
+- **Dispatched by Wan** → return a structured note (don't ask the user); Wan batches and asks.
+- **Invoked directly in the main thread** → ask the user yourself via `AskUserQuestion`.
+
+Fixed note shape (use verbatim):
+```
+NEEDS CLARIFICATION
+- Question: <the single blocking question, plainly stated>
+- Why it blocks: <what cannot proceed correctly without the answer>
+- Options: <A / B / C, if known>
+- Default if no answer: <what I will assume and do otherwise>
+```
+
+## Definition of Ready (DoR)
+A task is not started/dispatched until it has: an owner, the files in scope, **testable acceptance criteria**, a contract (if cross-stack), and **no blocking unknowns** (ambiguity test passes). DoR gates the start; DoD (below) gates "done".
+
 ## Definition of done (DoD)
 A task is done only when **all** hold — not when the code merely compiles:
 1. It meets the acceptance criteria, including the error/empty/edge paths, not just the happy path.

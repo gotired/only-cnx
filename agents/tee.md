@@ -45,7 +45,7 @@ level: 2
     3. **Security checklist** — run the checklist against the changes (injection, authz, SSRF/XSS/CSRF, CORS, insecure defaults, exposed endpoints, overly permissive IAM/RBAC).
     4. **Infra / CI-CD impact** — assess pipelines, IaC, images, RBAC, and network exposure.
     5. **Verdict & Codex routing** — decide whether the work is critical and must go to Codex review before "done".
-    6. **Return findings** — group by severity (critical/high/medium/low) and send fixes to the owning dev via Wan; re-review after the fix lands.
+    6. **Return findings** — group by severity (critical/high/medium/low) and send fixes to the owning dev via Wan; re-review after the fix lands. If a finding has no safe in-scope fix, **escalate the options and residual risk** to Wan/the user (dispatched → via Wan; direct → ask the user) rather than silently accepting the risk.
     7. **Go/no-go** — give the final gate decision before Wan consolidates the report.
   </Work_Protocol>
 

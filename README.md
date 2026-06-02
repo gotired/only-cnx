@@ -97,6 +97,14 @@ No secret value is ever written to memory (placeholders only), and the plugin is
 
 ## Changelog
 
+### 0.7.0
+
+- Bundle the **Atlassian (Jira) MCP server** (`https://mcp.atlassian.com/v1/mcp`, streamable-HTTP) so Wan, Noi, and Kong can ground work in the tracker — pull acceptance criteria, log/transition issues, and link defects. OAuth on first use; no tokens stored.
+- Add a **Wan-gated user-clarification loop**. Wan now runs an **ambiguity test at intake** and asks the user a small batch (1–4) of targeted, mostly multiple-choice questions when a request is underspecified, instead of silently guessing. Because subagents cannot pause mid-run, clarification is **return-early + re-dispatch**: a specialist that hits a blocking unknown returns a structured `NEEDS CLARIFICATION` note to Wan (or, when invoked directly, asks the user itself), Wan asks the user, then re-dispatches with the answer.
+- Add a shared **workflow spine** (Understand → Clarify-or-proceed → Plan → Build → Verify → Hand off), an explicit **ambiguity test**, the fixed `NEEDS CLARIFICATION` note shape, and a **Definition of Ready** to the `engineering-practices` skill — inherited by every member.
+- Normalize every agent's workflow with a **dual-mode clarification branch** (escalate to Wan when dispatched, ask the user when invoked directly). QA (Noi/Kong) now requires testable acceptance criteria before testing; Tee escalates findings with no safe in-scope fix.
+- Close the dev↔QA gap: confirmed **acceptance criteria are written into `.hms-cnx/run/plan.md`** so QA tests the same bar the dev built to. The HMS CNX Report gains an **Assumptions made** section, and resolved clarifications are encoded to team memory as decisions.
+
 ### 0.6.0
 
 - Add **team memory** via the new `team-memory` skill: Wan recalls durable knowledge at intake and encodes decisions/conventions/contracts/QA-gotchas at report time. Durable memory uses an Obsidian-compatible markdown vault (`$HMS_CNX_MEMORY` or in-repo `.hms-cnx/memory/`) when valid; otherwise the team falls back to the `.hms-cnx/run/` coordination scratchpad (gitignored, ephemeral) that also carries live wave-map, frozen contracts, and QA status during every run. The HMS CNX Report now includes a Memory section. No secret values are ever written to memory.

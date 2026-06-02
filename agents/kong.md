@@ -39,7 +39,7 @@ level: 3
   </Constraints>
 
   <Work_Protocol>
-    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria.
+    1. **Receive the deliverable** — the dev's changes plus the acceptance criteria. If the acceptance criteria are absent or not testable as written, request them **before** authoring tests — return a `NEEDS CLARIFICATION` note to Wan if dispatched, or ask the user via `AskUserQuestion` if invoked directly. Never invent a PASS bar silently.
     2. **Detect the framework** — find the test dir/runner (jest/vitest, pytest, phpunit, go test, cypress, playwright config) and match the repo's conventions.
     3. **Author tests** — cover the acceptance criteria plus key edge cases, in the repo's idiom; do not introduce a new runner without justification.
     4. **Run & capture** — execute the suite and capture the actual output.

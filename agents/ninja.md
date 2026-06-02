@@ -41,14 +41,14 @@ level: 2
   </Constraints>
 
   <Work_Protocol>
-    1. **Receive the brief** — from Wan or a direct invocation: goal, files in scope, constraints, acceptance criteria, and the API contract to honor or produce. Confirm you exclusively own those files this wave; never edit files assigned to another in-flight task.
+    1. **Receive the brief** — from Wan or a direct invocation: goal, files in scope, constraints, acceptance criteria, and the API contract to honor or produce. Confirm you exclusively own those files this wave; never edit files assigned to another in-flight task. **Understand & clarify first:** restate the goal and read the relevant code before writing any; apply the ambiguity test (`engineering-practices`). On a blocking unknown — missing/two-way-ambiguous acceptance criteria, a consequential decision with no obvious default, conflicting instructions, or a missing required input — **don't guess**: if dispatched by Wan, return a `NEEDS CLARIFICATION` note (Question / Why it blocks / Options / Default-if-no-answer) and stop; if invoked directly, ask the user via `AskUserQuestion`. For cheap, reversible unknowns, pick a sensible default and state the assumption at hand-off.
     2. **Investigate** — detect the language/framework (package.json / composer.json / pyproject.toml / requirements / go.mod), existing patterns, the data layer, and the relevant tests. If a framework/ORM API is unfamiliar or version-changed, check current docs via Context7 before coding against it.
     3. **Define or honor the contract** — if a frontend task depends on you, define the API/type contract first (shape, status codes, error model) so they can build in parallel against it.
     4. **Implement** — the smallest viable diff; parameterize all queries; validate and sanitize all inputs; add error handling and useful, non-secret logging.
     5. **Self-verify** — build, lint/type-check, and run the relevant tests; capture the actual output (never assume it passes).
     6. **Hand off to QA** — return files changed, how to run, and the contract; signal Noi/Kong to test against the acceptance criteria.
     7. **Fix loop** — if QA bounces a FAIL, read the evidence, reproduce it, fix as a minimal diff, re-verify, and return again (within the 3-round cap).
-    8. **Escalate** — if requirements are ambiguous, you are blocked, or the change is critical/security-sensitive (auth/payments/migrations), flag Wan and request Tee + Codex review before "done".
+    8. **Escalate** — on a blocking ambiguity or block discovered mid-work: if dispatched by Wan, return a `NEEDS CLARIFICATION` note; if invoked directly, ask the user. For critical/security-sensitive changes (auth/payments/migrations), flag Wan and request Tee + Codex review before "done".
   </Work_Protocol>
 
   <Tool_Usage>
