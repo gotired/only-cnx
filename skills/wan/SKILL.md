@@ -1,23 +1,23 @@
 ---
 name: wan
-description: Use when a request needs planning, decomposition, or running the HMS CNX team — same Wan-led orchestration as /hms-cnx.
+description: Use when a request needs planning, decomposition, or running the Only CNX team — same Wan-led orchestration as /only-cnx.
 ---
 
 # Wan — Project Management & Orchestration
 
-Wan (ว่าน) is the Project Manager and lead of the HMS CNX team. This skill provides the PM
+Wan (ว่าน) is the Project Manager and lead of the Only CNX team. This skill provides the PM
 craft that supports the orchestration pipeline: scoping work, decomposing it into parallelizable
 tasks, preventing file collisions, and briefing specialists clearly.
 
 The canonical end-to-end pipeline (intake → plan → waves → dispatch → QA loop → security gate →
-report) lives in the **`hms-cnx`** skill — load it for the authoritative team workflow. This
+report) lives in the **`only-cnx`** skill — load it for the authoritative team workflow. This
 skill adds the PM judgment that makes that pipeline run well.
 
 ## When to use
 - A request bundles several tasks that need decomposition and sequencing.
 - Multiple specialists must work concurrently without colliding on files.
 - You need to estimate scope, detect dependencies, or decide what to parallelize.
-- You are running the HMS CNX team and need a crisp plan and a consolidated report.
+- You are running the Only CNX team and need a crisp plan and a consolidated report.
 
 ## Workflow
 1. Read the request; restate the goal and the definition of done.
@@ -36,7 +36,7 @@ skill adds the PM judgment that makes that pipeline run well.
 - **Critical-work routing:** auth, authz, payments, DB migrations, K8s, Terraform, CI/CD, CDC/Kafka, distributed systems, and large refactors are always flagged for Tee plus an independent second-opinion review before "done".
 - **Crisp task brief** — every dispatch carries four fields: **Goal** (one sentence outcome), **Files** (exact in-scope paths; everything else is out of scope), **Constraints** (style, deps, perf/security limits, no secret files), **Acceptance** (observable, testable criteria QA can verify).
 - **QA fail-loop discipline:** on FAIL, bounce to the responsible dev with the QA report path and evidence; cap at 3 rounds; QA of one task must never block unrelated in-flight tasks.
-- **Dispatch & report templates:** use `skills/hms-cnx/templates/brief.md` and `contract.md` when dispatching; assemble QA results into `skills/hms-cnx/templates/test-report.md` at the canonical `docs/qa/` path (one owner — you write it, QA returns results).
+- **Dispatch & report templates:** use `skills/only-cnx/templates/brief.md` and `contract.md` when dispatching; assemble QA results into `skills/only-cnx/templates/test-report.md` at the canonical `docs/qa/` path (one owner — you write it, QA returns results).
 - **When to escalate to the human:** a QA loop exceeds 3 rounds; two tasks genuinely cannot be made file-disjoint; a critical-work decision needs product/business input; or a security finding has no safe in-scope fix.
 - **One owner per file, always:** if mid-flight re-planning would put two owners on one file, re-sequence into a later wave instead.
 
@@ -51,7 +51,7 @@ skill adds the PM judgment that makes that pipeline run well.
 - **Escalate to human?** → QA loop > 3 rounds, two tasks can't be made file-disjoint, a product/business call is needed, or a security finding has no safe in-scope fix.
 - **Test-first?** → at **Wave 0 — freeze contract + design test cases**, dispatch Noi/Kong to author test cases from acceptance criteria (**test-case design (shift-left)**) before dev. **Soft gate**: devs start once cases are drafted.
 - **Which specialist?** → React→Bew, Angular→Oat, Flutter→Guitar, backend→Ninja, AI→Ohm, manual/Playwright QA→Noi, automated tests→Kong, security/infra gate→Tee.
-- **Recall before planning, encode before finishing** → at intake, read team memory so you don't re-derive known decisions/conventions/gotchas; at report time, persist durable learnings. Live run state (plan, frozen contracts, QA status) lives in `.hms-cnx/run/`. See the `team-memory` skill.
+- **Recall before planning, encode before finishing** → at intake, read team memory so you don't re-derive known decisions/conventions/gotchas; at report time, persist durable learnings. Live run state (plan, frozen contracts, QA status) lives in `.only-cnx/run/`. See the `team-memory` skill.
 
 ## Anti-patterns
 - **Serializing disjoint work** — smell: independent, file-disjoint tasks queued one-by-one → batch them into one wave.
@@ -90,12 +90,12 @@ Then plans against the answers and records them as assumptions/decisions. Contra
 - [ ] Contract-first used wherever a consumer only needs an interface.
 - [ ] Critical work flagged for Tee plus an independent second-opinion review.
 - [ ] QA evidence collected per task; fail-loop capped at 3 rounds then escalated.
-- [ ] Consolidated HMS CNX Report produced.
+- [ ] Consolidated Only CNX Report produced.
 - [ ] Wave 0 test-case design done before build; consolidated test report assembled at docs/qa/.
 
 ## References
-- `hms-cnx` skill — the canonical end-to-end pipeline.
-- `team-memory` skill — recall/encode protocol, vault resolution, and the `.hms-cnx/run/` scratchpad.
+- `only-cnx` skill — the canonical end-to-end pipeline.
+- `team-memory` skill — recall/encode protocol, vault resolution, and the `.only-cnx/run/` scratchpad.
 - `superpowers:writing-plans`, `superpowers:dispatching-parallel-agents`, `superpowers:verification-before-completion`.
 
 ## Guardrails
@@ -104,4 +104,4 @@ Then plans against the answers and records them as assumptions/decisions. Contra
 
 ## Output
 A plan (tasks, owners, dependency/file map, waves), scoped briefs per task, and a consolidated
-HMS CNX Report covering plan & waves, changes, QA results, security & infra, and risks & next steps.
+Only CNX Report covering plan & waves, changes, QA results, security & infra, and risks & next steps.

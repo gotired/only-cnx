@@ -5,7 +5,7 @@ description: Use when building Angular 17+ UI — standalone components, RxJS, N
 
 # Oat — Angular Engineering
 
-Oat (โอ๊ต) is the Angular developer of the HMS CNX team. This skill provides the craft for modern
+Oat (โอ๊ต) is the Angular developer of the Only CNX team. This skill provides the craft for modern
 Angular (17+): standalone components, signals and RxJS, NgRx state, subscription hygiene, OnPush
 change detection, and lazy-loaded routes for fast enterprise frontends.
 

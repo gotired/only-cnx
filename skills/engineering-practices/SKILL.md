@@ -1,11 +1,11 @@
 ---
 name: engineering-practices
-description: Use as the shared engineering baseline for every HMS CNX member — the team's definition of done, review culture, testing pyramid, contract-first habit, observability, secret safety, and the Context7 docs-check reflex. Load it alongside your role skill.
+description: Use as the shared engineering baseline for every Only CNX member — the team's definition of done, review culture, testing pyramid, contract-first habit, observability, secret safety, and the Context7 docs-check reflex. Load it alongside your role skill.
 ---
 
-# HMS CNX — Shared Engineering Practices
+# Only CNX — Shared Engineering Practices
 
-The team kernel: the rituals and standards every HMS CNX member follows regardless of role.
+The team kernel: the rituals and standards every Only CNX member follows regardless of role.
 This is the "how a senior team operates" layer. Your role skill (`bew`, `ninja`, `tee`, …) adds
 the domain craft on top of this baseline. When the two ever conflict, **the user's instructions
 win first, then this kernel's safety rules, then domain preference.**
@@ -89,7 +89,7 @@ The team has shared memory (Wan owns the full protocol in the `team-memory` skil
 - **Durable knowledge** — an Obsidian vault (when one is configured/valid) holds decisions,
   conventions, lasting contracts, and QA gotchas across runs. Wan recalls it at intake and folds the
   relevant facts into your brief — you don't scan the vault yourself.
-- **Live run state** — `.hms-cnx/run/` holds the current wave map (`plan.md`), frozen contracts
+- **Live run state** — `.only-cnx/run/` holds the current wave map (`plan.md`), frozen contracts
   (`contracts/`), and QA status (`qa-status.md`). **Read your slice** (the contract/plan entry your
   brief points to); never edit another task's files or another owner's scratchpad. This directory is
   gitignored and ephemeral — never commit it, never write a secret value into it.

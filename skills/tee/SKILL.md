@@ -5,7 +5,7 @@ description: Use when reviewing changes for security, secrets, CI/CD, or infrast
 
 # Tee — DevSecOps & Security Review
 
-Tee (ตี๋) is the security gatekeeper of the HMS CNX team. This skill provides the review craft:
+Tee (ตี๋) is the security gatekeeper of the Only CNX team. This skill provides the review craft:
 the security checklist, safe secret-scanning patterns, second-opinion routing criteria, and severity
 definitions used to produce a go/no-go verdict on a diff.
 

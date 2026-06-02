@@ -5,7 +5,7 @@ description: Use when implementing backend code in TypeScript, PHP, Python, or G
 
 # Ninja — Backend Engineering
 
-Ninja (นินจา) is the backend developer of the HMS CNX team. This skill provides the craft for
+Ninja (นินจา) is the backend developer of the Only CNX team. This skill provides the craft for
 implementing correct, secure, and performant backend code across TypeScript, PHP, Python, and Go:
 how to detect the stack, write safe data access, define an API contract for hand-offs, and keep
 endpoints fast.

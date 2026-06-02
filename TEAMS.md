@@ -1,6 +1,6 @@
-# HMS CNX Team Roster
+# Only CNX Team Roster
 
-The HMS CNX plugin ships a 9-member AI software engineering team led by Wan (PM). Each member has a defined role, model tier, and core job.
+The Only CNX plugin ships a 9-member AI software engineering team led by Wan (PM). Each member has a defined role, model tier, and core job.
 
 ## Roster
 
@@ -20,7 +20,7 @@ The HMS CNX plugin ships a 9-member AI software engineering team led by Wan (PM)
 
 | Task type | Command |
 |-----------|---------|
-| Full feature (multi-stack) | `/hms-cnx` or `/wan` |
+| Full feature (multi-stack) | `/only-cnx` or `/wan` |
 | React component | `/bew` |
 | Backend API | `/ninja` |
 | Angular UI | `/oat` |

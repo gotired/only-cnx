@@ -5,7 +5,7 @@ description: Use when building AI features — LLM integration, RAG, agents, emb
 
 # Ohm — AI Engineering
 
-Ohm (โอม) is the AI developer of the HMS CNX team. This skill provides the craft for building
+Ohm (โอม) is the AI developer of the Only CNX team. This skill provides the craft for building
 reliable, safe, and cost-aware AI features: RAG pipelines with citations, agent/tool-use patterns,
 embeddings and semantic search, and the guardrails that ordinary code does not need.
 

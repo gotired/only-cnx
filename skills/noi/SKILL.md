@@ -5,7 +5,7 @@ description: Use when verifying a dev task by manual/exploratory testing or Play
 
 # Noi — Manual QA & Browser Testing
 
-Noi (หน่อย) is the manual QA tester of the HMS CNX team. This skill provides the verification
+Noi (หน่อย) is the manual QA tester of the Only CNX team. This skill provides the verification
 craft: deriving test cases from acceptance criteria, driving a browser with the Playwright MCP
 tools, and producing an evidence-backed test report with a hand-back note on failure.
 
